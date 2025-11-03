@@ -126,24 +126,44 @@ Let's now create an Azure Migrate project
 6. [ ] Connection ++NestedSwitch++
 7. [ ] For the hard drive, find the extracted zip file in the F drive, and locate the vhd file
 8. [ ] Start the VM
+9. [ ] Initially, the VM will have a back scree. Wait for few minutes until it starts
 
 > ![Hyper-V architecture](https://raw.githubusercontent.com/crgarcia12/migrate-modernize-lab/refs/heads/main/lab-material/media/0092.png)
 
 ===
 
-### Install the Appliance
-1. [ ] Open the Hyper-V manager
-2. [ ] Select ++New++ -> ++Virtual Machine++ (look picture bellow for reference)
-3. [ ] Select a name
-4. [ ] In Location, specify +++F:\Hyper-V\Virtual Machines\appliance+++
-5. [ ] Select +++16384+++ MB of RAM
-6. [ ] Connection ++NestedSwitch++
-7. [ ] For the hard drive, find the extracted zip file in the F drive, and locate the vhd file
-8. [ ] Start the VM
+### Configure the appliance
+1. [ ] Assign a password for the appliance. You can use +++demo!pass123+++
+2. [ ] Send a **Ctrl+Alt+Del** command and log in into the VM
 
-> ![Hyper-V architecture](https://raw.githubusercontent.com/crgarcia12/migrate-modernize-lab/refs/heads/main/lab-material/media/0092.png)
+	> [+Hint] Do you know how to send Ctrl+Alt+Del to a VM?
+  	>
+  	> ![Hyper-V architecture](https://raw.githubusercontent.com/crgarcia12/migrate-modernize-lab/refs/heads/main/lab-material/media/0093.png)
+
+3. [ ] Paste the Key we got before TODO: Find the variable
+	> [+Hint] If Copy paste does not work
+  	>
+  	> You can type the clipboard in the VM
+    > ![Hyper-V architecture](https://raw.githubusercontent.com/crgarcia12/migrate-modernize-lab/refs/heads/main/lab-material/media/0093.png)
+
+
+5. [ ] 
+
+
 
 ===
+
+TODO
+Go to the already created lab
+Explore assessment
+Explore business case
+
+===
+TODO
+Quiz
+
+===
+
 
 # Excersise 2
 
