@@ -1,4 +1,4 @@
-$environmentName = "mig13"
+$environmentName = "mig17"
 
 $subscriptionId = (Get-AzContext).Subscription.Id
 $resourceGroup = "$environmentName-rg"
@@ -15,7 +15,7 @@ New-AzResourceGroup -Name "${environmentName}-rg" -Location "swedencentral"
 New-AzResourceGroupDeployment `
     -Name $environmentName `
     -ResourceGroupName "${environmentName}-rg" `
-    -TemplateFile '.\templates\lab197959-template2 (v5).json' `
+    -TemplateFile '.\templates\lab197959-template2 (v6).json' `
     -prefix $environmentName `
     -Verbose
 
