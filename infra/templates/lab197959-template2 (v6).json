@@ -5,8 +5,8 @@
   "parameters": {
     "prefix": {
       "type": "string",
-      //"defaultValue": "lab@lab.LabInstance.ID",
-      "defaultValue": "crgmig",
+      "defaultValue": "lab@lab.LabInstance.ID",
+      //"defaultValue": "crgmig",
       "metadata": {
         "description": "Resource name prefix"
       }
