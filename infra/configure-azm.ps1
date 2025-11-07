@@ -107,6 +107,7 @@ try {
     Invoke-WebRequest $remoteZipFilePath -OutFile $localZipFilePath
     Write-LogToBlob "Downloaded artifacts to: $localZipFilePath"
 
+    # Skillable deployment is through their platform
     # Create resource group and deploy ARM template
     # Write-LogToBlob "Creating resource group: ${environmentName}-rg"
     # New-AzResourceGroup -Name "${environmentName}-rg" -Location "swedencentral"
@@ -209,6 +210,49 @@ try {
     else {
         Write-LogToBlob "Import job completed successfully. Imported machines."
     }
+
+
+    $environmentName = "mig19"
+    $resourceGroup = "$environmentName-rg"
+
+
+
+    # Create VMware Collector
+    Write-LogToBlob "Creating VMware Collector" -ErrorAction Continue
+    $assessmentProjectName = "${environmentName}asmproject"
+    $vmwarecollectorName = "${environmentName}vmwaresitevmwarecollector"
+
+    # Get site first
+    $vmwareSiteUri = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.OffAzure/VMwareSites/$($environmentName)vmwaresite?api-version=2024-12-01-preview"
+    $vmwareSiteResponse = Invoke-RestMethod -Uri $vmwareSiteUri -Method GET -Headers $headers
+
+
+    $vmwareCollectorUri = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Migrate/assessmentprojects/$assessmentProjectName/vmwarecollectors/$($vmwarecollectorName)?api-version=2018-06-30-preview"
+    $vmwareCollectorBody = @{
+        "id" = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.Migrate/assessmentprojects/$assessmentProjectName/vmwarecollectors/$vmwarecollectorName"
+        "name" = "$vmwarecollectorName"
+        "type" = "Microsoft.Migrate/assessmentprojects/vmwarecollectors"
+        "properties" = @{
+            "agentProperties" = @{
+                "id" = "$($vmwareSiteResponse.properties.agentDetails.id)"
+                "lastHeartbeatUtc" = "2025-04-24T09:48:04.3893222Z"
+                "spnDetails" = @{
+                    "authority" = "authority"
+                    "applicationId" = "appId"
+                    "audience" = "audience"
+                    "objectId" = "objectid"
+                    "tenantId" = "tenantid"
+                }
+            }
+            "discoverySiteId" = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.OffAzure/VMwareSites/$($environmentName)vmwaresite"
+        }
+    } | ConvertTo-Json -Depth 10
+    
+    $response = Invoke-RestMethod -Uri $vmwareCollectorUri `
+        -Method PUT `
+        -Headers $headers `
+        -ContentType 'application/json' `
+        -Body $vmwareCollectorBody    
 
     # Script execution completed
     Write-LogToBlob "Script execution completed"
