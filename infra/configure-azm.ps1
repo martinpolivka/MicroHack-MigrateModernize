@@ -210,13 +210,13 @@ function Initialize-LogBlob {
 
 function Register-MigrateTools {
     param(
-        [string]$EnvironmentName,
-        [hashtable]$Headers
+        [string]$EnvironmentName
     )
     
     Write-LogToBlob "Registering Azure Migrate tools"
     
     try {
+        $Headers = Get-AuthenticationHeaders
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
         $migrateProjectName = "${EnvironmentName}-azm"
@@ -272,13 +272,13 @@ function Get-DiscoveryArtifacts {
 function Start-ArtifactImport {
     param(
         [string]$LocalZipFilePath,
-        [string]$EnvironmentName,
-        [hashtable]$Headers
+        [string]$EnvironmentName
     )
     
     Write-LogToBlob "Starting artifact import process"
     
     try {
+        $Headers = Get-AuthenticationHeaders
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
         $masterSiteName = "${EnvironmentName}mastersite"
@@ -314,8 +314,7 @@ function Start-ArtifactImport {
 
 function Wait-ImportJobCompletion {
     param(
-        [string]$JobArmId,
-        [hashtable]$Headers
+        [string]$JobArmId
     )
     
     Write-LogToBlob "Waiting for import job completion"
@@ -323,6 +322,7 @@ function Wait-ImportJobCompletion {
     $JobArmId = $JobArmId.Trim()
 
     try {
+        $Headers = Get-AuthenticationHeaders
         $apiVersionOffAzure = "2024-12-01-preview"
         $jobUrl = "https://management.azure.com$($JobArmId)?api-version=$apiVersionOffAzure"
         $waitTimeSeconds = 20
@@ -331,6 +331,11 @@ function Wait-ImportJobCompletion {
         $jobCompleted = $false
      
         do {
+            # Refresh token every 5 attempts (approximately every 1-3 minutes)
+            if ($attempt % 5 -eq 0) {
+                $Headers = Get-AuthenticationHeaders
+            }
+            
             $jobStatus = Invoke-RestMethod -Uri $jobUrl -Method GET -Headers $Headers
             $jobResult = $jobStatus.properties.jobResult
             Write-LogToBlob "Attempt $($attempt + 1): Job status - $jobResult"
@@ -370,13 +375,13 @@ function Wait-ImportJobCompletion {
 
 function Get-WebAppSiteDetails {
     param(
-        [string]$EnvironmentName,
-        [hashtable]$Headers
+        [string]$EnvironmentName
     )
     
     Write-LogToBlob "Getting WebApp Site details"
     
     try {
+        $Headers = Get-AuthenticationHeaders
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
         $masterSiteName = "${EnvironmentName}mastersite"
@@ -415,13 +420,13 @@ function Get-WebAppSiteDetails {
 
 function Get-SqlSiteDetails {
     param(
-        [string]$EnvironmentName,
-        [hashtable]$Headers
+        [string]$EnvironmentName
     )
     
     Write-LogToBlob "Getting SQL Site details"
     
     try {
+        $Headers = Get-AuthenticationHeaders
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
         $masterSiteName = "${EnvironmentName}mastersite"
@@ -460,13 +465,13 @@ function Get-SqlSiteDetails {
 
 function Get-VMwareCollectorAgentId {
     param(
-        [string]$EnvironmentName,
-        [hashtable]$Headers
+        [string]$EnvironmentName
     )
     
     Write-LogToBlob "Getting VMware Collector Agent ID"
     
     try {
+        $Headers = Get-AuthenticationHeaders
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
  $apiVersionOffAzure = "2024-12-01-preview"
@@ -491,13 +496,13 @@ function Get-VMwareCollectorAgentId {
 function Invoke-VMwareCollectorSync {
     param(
         [string]$AgentId,
-        [string]$EnvironmentName,
-        [hashtable]$Headers
+        [string]$EnvironmentName
     )
     
     Write-LogToBlob "Synchronizing VMware Collector"
     
     try {
+        $Headers = Get-AuthenticationHeaders
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
         $assessmentProjectName = "${EnvironmentName}asmproject"
@@ -550,8 +555,7 @@ function New-WebAppCollector {
     param(
         [string]$EnvironmentName,
         [string]$WebAppSiteId,
-        [string]$WebAppAgentId,
-        [hashtable]$Headers
+        [string]$WebAppAgentId
     )
     
     Write-LogToBlob "Creating WebApp Collector"
@@ -561,6 +565,8 @@ function New-WebAppCollector {
             Write-LogToBlob "Skipping WebApp Collector creation - missing WebApp agent ID or site ID" "WARN"
             return $false
         }
+
+        $Headers = Get-AuthenticationHeaders
 
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
@@ -611,8 +617,7 @@ function New-SqlCollector {
     param(
         [string]$EnvironmentName,
         [string]$SqlSiteId,
-        [string]$SqlAgentId,
-        [hashtable]$Headers
+        [string]$SqlAgentId
     )
     
     Write-LogToBlob "Creating SQL Collector"
@@ -622,6 +627,8 @@ function New-SqlCollector {
             Write-LogToBlob "Skipping SQL Collector creation - missing SQL agent ID or site ID" "WARN"
             return $false
         }
+
+        $Headers = Get-AuthenticationHeaders
 
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
@@ -674,13 +681,13 @@ function New-SqlCollector {
 
 function New-MigrationAssessment {
     param(
-        [string]$EnvironmentName,
-        [hashtable]$Headers
+        [string]$EnvironmentName
     )
     
     Write-LogToBlob "Creating migration assessment"
     
     try {
+        $Headers = Get-AuthenticationHeaders
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
         $assessmentProjectName = "${EnvironmentName}asmproject"
@@ -758,13 +765,13 @@ migrateresources
 
 function New-SqlAssessment {
     param(
-        [string]$EnvironmentName,
-        [hashtable]$Headers
+        [string]$EnvironmentName
     )
     
     Write-LogToBlob "Creating SQL Assessment"
     
     try {
+        $Headers = Get-AuthenticationHeaders
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
         $assessmentProjectName = "${EnvironmentName}asmproject"
@@ -806,11 +813,6 @@ function New-SqlAssessment {
                     }
                     "sqlServerLicense" = "Yes"
                     "azureSqlVmSettings" = @{
-                        "azureSqlServiceTier" = "GeneralPurpose"
-                        "azureSqlComputeTier" = "Provisioned"
-                        "azureSqlPurchasingModel" = "VCore"
-                        "azureSqlDataDiskType" = "StandardSSD"
-                        "azureSqlLogDiskType" = "StandardSSD"
                         "instanceSeries" = @(
                             "Ddsv4_series",
                             "Ddv4_series",
@@ -819,20 +821,18 @@ function New-SqlAssessment {
                         )
                     }
                     "entityUptime" = @{
-                        "daysPerMonth" = "31"
-                        "hoursPerDay" = "24"
+                        "daysPerMonth" = 31
+                        "hoursPerDay" = 24
                     }
                     "azureSqlManagedInstanceSettings" = @{
-                        "azureSqlServiceTier" = "GeneralPurpose"
-                        "azureSqlComputeTier" = "Provisioned"
                         "azureSqlInstanceType" = "SingleInstance"
+                        "azureSqlServiceTier" = "SqlServiceTier_Automatic"
                     }
                     "azureSqlDatabaseSettings" = @{
-                        "azureSqlServiceTier" = "GeneralPurpose"
                         "azureSqlComputeTier" = "Provisioned"
-                        "azureSqlPurchasingModel" = "VCore"
-                        "azureSqlDataBaseType" = "SingleDatabase"
                         "azureSqlPurchaseModel" = "VCore"
+                        "azureSqlServiceTier" = "SqlServiceTier_Automatic"
+                        "azureSqlDataBaseType" = "SingleDatabase"
                     }
                     "environmentType" = "Production"
                     "enableHadrAssessment" = $true
@@ -883,13 +883,13 @@ migrateresources
 
 function New-BusinessCaseOptimizeForPaas {
     param(
-        [string]$EnvironmentName,
-        [hashtable]$Headers
+        [string]$EnvironmentName
     )
     
     Write-LogToBlob "Creating OptimizeForPaas Business Case"
     
     try {
+        $Headers = Get-AuthenticationHeaders
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
         $assessmentProjectName = "${EnvironmentName}asmproject"
@@ -919,19 +919,13 @@ migrateresources
                 }
                 "settings" = @{
                     "commonSettings" = @{
-                        "discountPercentage" = 0
-                        "currency" = "USD"
-                        "azureLocation" = $location
-                        "enablePreviewFeatures" = $false
-                        "yOYGrowth" = 5
                         "targetLocation" = $location
                         "infrastructureGrowthRate" = 0
+                        "currency" = "USD"
                         "workloadDiscoverySource" = "Appliance"
                         "businessCaseType" = "OptimizeForPaas"
                     }
                     "azureSettings" = @{
-                        "complyWithCaf" = "OptimizeForPaas"
-                        "optimizationLogic" = "ModernizeToPaas"
                         "savingsOption" = "RI3Year"
                     }
                 }
@@ -963,13 +957,13 @@ migrateresources
 
 function New-BusinessCaseIaasOnly {
     param(
-        [string]$EnvironmentName,
-        [hashtable]$Headers
+        [string]$EnvironmentName
     )
     
     Write-LogToBlob "Creating IaaSOnly Business Case"
     
     try {
+        $Headers = Get-AuthenticationHeaders
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
         $assessmentProjectName = "${EnvironmentName}asmproject"
@@ -999,19 +993,13 @@ migrateresources
                 }
                 "settings" = @{
                     "commonSettings" = @{
-                        "discountPercentage" = 0
-                        "currency" = "USD"
-                        "azureLocation" = $location
-                        "enablePreviewFeatures" = $false
-                        "yOYGrowth" = 5
                         "targetLocation" = $location
                         "infrastructureGrowthRate" = 0
+                        "currency" = "USD"
                         "workloadDiscoverySource" = "Appliance"
                         "businessCaseType" = "IaaSOnly"
                     }
                     "azureSettings" = @{
-                        "complyWithCaf" = "IaaSOnly"
-                        "optimizationLogic" = "MinimizeCost"
                         "savingsOption" = "RI3Year"
                     }
                 }
@@ -1043,13 +1031,13 @@ migrateresources
 
 function New-HeterogeneousAssessment {
     param(
-        [string]$EnvironmentName,
-        [hashtable]$Headers
+        [string]$EnvironmentName
     )
     
     Write-LogToBlob "Creating Heterogeneous Assessment"
     
     try {
+        $Headers = Get-AuthenticationHeaders
         $subscriptionId = (Get-AzContext).Subscription.Id
         $resourceGroupName = if ($SkillableEnvironment) { "on-prem" } else { "${EnvironmentName}-rg" }
         $assessmentProjectName = "${EnvironmentName}asmproject"
@@ -1129,39 +1117,36 @@ function Invoke-AzureMigrateConfiguration {
             New-AzureEnvironment -EnvironmentName $EnvironmentName
         }
         
-        # Step 3: Get authentication headers
-        $headers = Get-AuthenticationHeaders
+        # Step 3: Register Azure Migrate tools
+        Register-MigrateTools -EnvironmentName $EnvironmentName
         
-        # Step 4: Register Azure Migrate tools
-        Register-MigrateTools -EnvironmentName $EnvironmentName -Headers $headers
-        
-        # Step 5: Download and import discovery artifacts
+        # Step 4: Download and import discovery artifacts
         $localZipPath = Get-DiscoveryArtifacts
-        $jobArmId = Start-ArtifactImport -LocalZipFilePath $localZipPath -EnvironmentName $EnvironmentName -Headers $headers
-        Wait-ImportJobCompletion -JobArmId $jobArmId -Headers $headers
+        $jobArmId = Start-ArtifactImport -LocalZipFilePath $localZipPath -EnvironmentName $EnvironmentName
+        Wait-ImportJobCompletion -JobArmId $jobArmId
         
-        # Step 6: Get site details for WebApp and SQL
-        $webAppSiteDetails = Get-WebAppSiteDetails -EnvironmentName $EnvironmentName -Headers $headers
-        $sqlSiteDetails = Get-SqlSiteDetails -EnvironmentName $EnvironmentName -Headers $headers
+        # Step 5: Get site details for WebApp and SQL
+        $webAppSiteDetails = Get-WebAppSiteDetails -EnvironmentName $EnvironmentName
+        $sqlSiteDetails = Get-SqlSiteDetails -EnvironmentName $EnvironmentName
         
-        # Step 7: Configure VMware Collector
-        $agentId = Get-VMwareCollectorAgentId -EnvironmentName $EnvironmentName -Headers $headers
-        Invoke-VMwareCollectorSync -AgentId $agentId -EnvironmentName $EnvironmentName -Headers $headers
+        # Step 6: Configure VMware Collector
+        $agentId = Get-VMwareCollectorAgentId -EnvironmentName $EnvironmentName
+        Invoke-VMwareCollectorSync -AgentId $agentId -EnvironmentName $EnvironmentName
         
-        # Step 8: Create WebApp and SQL Collectors (if available)
-        $webAppCollectorCreated = New-WebAppCollector -EnvironmentName $EnvironmentName -WebAppSiteId $webAppSiteDetails.SiteId -WebAppAgentId $webAppSiteDetails.AgentId -Headers $headers
-        $sqlCollectorCreated = New-SqlCollector -EnvironmentName $EnvironmentName -SqlSiteId $sqlSiteDetails.SiteId -SqlAgentId $sqlSiteDetails.AgentId -Headers $headers
+        # Step 7: Create WebApp and SQL Collectors (if available)
+        $webAppCollectorCreated = New-WebAppCollector -EnvironmentName $EnvironmentName -WebAppSiteId $webAppSiteDetails.SiteId -WebAppAgentId $webAppSiteDetails.AgentId
+        $sqlCollectorCreated = New-SqlCollector -EnvironmentName $EnvironmentName -SqlSiteId $sqlSiteDetails.SiteId -SqlAgentId $sqlSiteDetails.AgentId
         
-        # Step 9: Create assessments
-        New-MigrationAssessment -EnvironmentName $EnvironmentName -Headers $headers
-        $sqlAssessmentName = New-SqlAssessment -EnvironmentName $EnvironmentName -Headers $headers
+        # Step 8: Create assessments
+        New-MigrationAssessment -EnvironmentName $EnvironmentName
+        $sqlAssessmentName = New-SqlAssessment -EnvironmentName $EnvironmentName
         
-        # Step 10: Create business cases
-        $paasBusinessCaseName = New-BusinessCaseOptimizeForPaas -EnvironmentName $EnvironmentName -Headers $headers
-        $iaasBusinessCaseName = New-BusinessCaseIaasOnly -EnvironmentName $EnvironmentName -Headers $headers
+        # Step 9: Create business cases
+        $paasBusinessCaseName = New-BusinessCaseOptimizeForPaas -EnvironmentName $EnvironmentName
+        $iaasBusinessCaseName = New-BusinessCaseIaasOnly -EnvironmentName $EnvironmentName
         
-        # Step 11: Create heterogeneous assessment
-        $heteroAssessmentName = New-HeterogeneousAssessment -EnvironmentName $EnvironmentName -Headers $headers
+        # Step 10: Create heterogeneous assessment
+        $heteroAssessmentName = New-HeterogeneousAssessment -EnvironmentName $EnvironmentName
         
         Write-LogToBlob "=== Azure Migrate Configuration Completed Successfully ==="
         Write-LogToBlob "Summary of created resources:"
