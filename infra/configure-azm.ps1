@@ -6,7 +6,7 @@
 
 $SkillableEnvironment = $true
 $EnvironmentName = "" # Set your environment name here for non-Skillable environments
-$ScriptVersion = "8.0.0"
+$ScriptVersion = "9.0.0"
 
 ######################################################
 ##############   INFRASTRUCTURE FUNCTIONS   #########

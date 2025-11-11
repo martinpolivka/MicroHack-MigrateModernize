@@ -5,10 +5,12 @@
 # Configuration
 $ScriptUrl = "https://github.com/crgarcia12/migrate-modernize-lab/raw/refs/heads/main/infra/configure-azm.ps1"
 $TempPath = $env:TEMP
-$ScriptVersion = "8.0.0"
+$ScriptVersion = "9.0.0"
 
-# Script-level variable to track if logging has been initialized
-$script:LoggingInitialized = $false
+# Script-level variables to track logging state and buffer (Download script specific)
+$script:DownloadLoggingInitialized = $false
+$script:DownloadLogBuffer = [System.Text.StringBuilder]::new()
+$script:DownloadStorageContext = $null
 
 ######################################################
 ##############   LOGGING FUNCTIONS   ################
@@ -20,111 +22,87 @@ function Write-LogToBlob {
         [string]$Level = "INFO"
     )
     
-    # Blob storage configuration for logging
-    $STORAGE_SAS_TOKEN = "?sv=2024-11-04&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2026-01-30T22:09:19Z&st=2025-11-05T13:54:19Z&spr=https&sig=mBoL3bVHPGSniTeFzXZ5QdItTxaFYOrhXIOzzM2jvF0%3D"
-    $STORAGE_ACCOUNT_NAME = "azmdeploymentlogs"
-    $CONTAINER_NAME = "logs"
-    $SkillableEnvironment = $true
-    $environmentName = "download@lab.LabInstance.ID"
-    
-    # Auto-initialize logging if not already done
-    if ($SkillableEnvironment -eq $true -and -not $script:LoggingInitialized) {
-        Initialize-LogBlob -StorageAccountName $STORAGE_ACCOUNT_NAME -SasToken $STORAGE_SAS_TOKEN -ContainerName $CONTAINER_NAME -EnvironmentName $environmentName
-    }
-    
-    $LOG_BLOB_NAME = "$environmentName.download.txt"
-    
     $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
     $logEntry = "[$timestamp] [$Level] $Message"
     
     # Write to console
     Write-Host $logEntry
     
+    $SkillableEnvironment = $true
+    
     if ($SkillableEnvironment -eq $false) {
         return
     }
 
-    # Write to blob using Az.Storage commands
+    # Add to memory buffer and immediately write to blob
     try {
-        # Create storage context using SAS token
-        $ctx = New-AzStorageContext -StorageAccountName $STORAGE_ACCOUNT_NAME -SasToken $STORAGE_SAS_TOKEN        # Get existing blob content to append
-        $existingContent = ""
-        try {
-            Get-AzStorageBlobContent -Blob $LOG_BLOB_NAME -Container $CONTAINER_NAME -Context $ctx -Force -Destination "$env:TEMP\templog.txt" -ErrorAction Stop | Out-Null
-            $existingContent = Get-Content "$env:TEMP\templog.txt" -Raw -ErrorAction SilentlyContinue
-            Remove-Item "$env:TEMP\templog.txt" -Force -ErrorAction SilentlyContinue
-        }
-        catch {
-            # Blob doesn't exist yet, that's fine
-            Write-Host "Creating new log blob..." -ForegroundColor Yellow
-        }
+        # Add log entry to buffer (download-specific)
+        $null = $script:DownloadLogBuffer.AppendLine($logEntry)
         
-        # Append new log entry
-        $newContent = $existingContent + $logEntry + "`n"
-        
-        # Write back to blob
-        $tempFile = "$env:TEMP\$([System.Guid]::NewGuid()).txt"
-        Set-Content -Path $tempFile -Value $newContent -NoNewline
-        Set-AzStorageBlobContent -File $tempFile -Blob $LOG_BLOB_NAME -Container $CONTAINER_NAME -Context $ctx -Force | Out-Null
-        Remove-Item $tempFile -Force -ErrorAction SilentlyContinue
+        # Immediately write entire buffer to blob (overwrite)
+        Write-DownloadBufferToBlob
         
     }
     catch {
         Write-Host "Failed to write log to blob: $($_.Exception.Message)" -ForegroundColor Red
         # Fallback to local file if blob fails
-        $localLogFile = ".\script-execution.log"
+        $localLogFile = ".\download-script-execution.log"
         Add-Content -Path $localLogFile -Value $logEntry
     }
 }
 
-function Initialize-LogBlob {
-    param(
-        [string]$StorageAccountName,
-        [string]$SasToken,
-        [string]$ContainerName,
-        [string]$EnvironmentName
-    )
+function Write-DownloadBufferToBlob {
+    # Logging configuration constants (Download script specific)
+    $DOWNLOAD_STORAGE_SAS_TOKEN = "?sv=2024-11-04&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2026-01-30T22:09:19Z&st=2025-11-05T13:54:19Z&spr=https&sig=mBoL3bVHPGSniTeFzXZ5QdItTxaFYOrhXIOzzM2jvF0%3D"
+    $DOWNLOAD_STORAGE_ACCOUNT_NAME = "azmdeploymentlogs"
+    $DOWNLOAD_CONTAINER_NAME = "logs"
+    $downloadEnvironmentName = "@lab.LabInstance.ID"
+    $DOWNLOAD_LOG_BLOB_NAME = "$downloadEnvironmentName.download.txt"
     
-    # Skip initialization if already done
-    if ($script:LoggingInitialized) {
-        return
+    # Auto-initialize logging if not already done
+    if (-not $script:DownloadLoggingInitialized) {
+        
+        try {
+            # Initialize script-level storage context (download-specific)
+            $script:DownloadStorageContext = New-AzStorageContext -StorageAccountName $DOWNLOAD_STORAGE_ACCOUNT_NAME -SasToken $DOWNLOAD_STORAGE_SAS_TOKEN
+            
+            # Initialize the log buffer with header
+            $initialLog = "=== Download Script [$ScriptVersion] execution started at $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ===`nEnvironment: $downloadEnvironmentName`n"
+            $null = $script:DownloadLogBuffer.AppendLine($initialLog)
+            
+            Write-Host "Initialized download log blob: $DOWNLOAD_LOG_BLOB_NAME" -ForegroundColor Green
+            $script:DownloadLoggingInitialized = $true
+            
+        }
+        catch {
+            Write-Host "Failed to initialize download log blob: $($_.Exception.Message)" -ForegroundColor Red
+            Write-Host "Check if storage account and container exist" -ForegroundColor Red
+            Write-Host "Also verify SAS token permissions and expiration" -ForegroundColor Red
+            
+            # Fallback to local file
+            $localLogFile = ".\download-script-execution.log"
+            $initialLog = "=== Download Script execution started at $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ===`nEnvironment: $downloadEnvironmentName`n"
+            Set-Content -Path $localLogFile -Value $initialLog -NoNewline
+            Write-Host "Created local log file as fallback: $localLogFile" -ForegroundColor Yellow
+            $script:DownloadLoggingInitialized = $true
+        }
     }
     
-    $LOG_BLOB_NAME = "$EnvironmentName.log.txt"
-    $SkillableEnvironment = $true
-    
-    if (-not $SkillableEnvironment) {
-        Write-Host "Skillable environment disabled, skipping blob logging initialization" -ForegroundColor Yellow
-        $script:LoggingInitialized = $true
-        return
-    }
-
+    # Write the entire buffer content to blob, avoiding read operations
     try {
-        $ctx = New-AzStorageContext -StorageAccountName $StorageAccountName -SasToken $SasToken
-        
-        $initialLog = "=== Download Script [$ScriptVersion] execution started at $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ===`nEnvironment: $EnvironmentName`n"
-        
-        $tempFile = "$env:TEMP\$([System.Guid]::NewGuid()).txt"
-        Set-Content -Path $tempFile -Value $initialLog -NoNewline
-        
-        Set-AzStorageBlobContent -File $tempFile -Blob $LOG_BLOB_NAME -Container $ContainerName -Context $ctx -Force | Out-Null
-        Remove-Item $tempFile -Force -ErrorAction SilentlyContinue
-        
-        Write-Host "Initialized log blob: $LOG_BLOB_NAME" -ForegroundColor Green
-        $script:LoggingInitialized = $true
-        
+        if ($script:DownloadStorageContext -and $script:DownloadLogBuffer.Length -gt 0) {
+            # Create temp file with buffer content
+            $tempFile = "$env:TEMP\$([System.Guid]::NewGuid()).txt"
+            Set-Content -Path $tempFile -Value $script:DownloadLogBuffer.ToString() -NoNewline
+            
+            # Overwrite blob with complete buffer content
+            Set-AzStorageBlobContent -File $tempFile -Blob $DOWNLOAD_LOG_BLOB_NAME -Container $DOWNLOAD_CONTAINER_NAME -Context $script:DownloadStorageContext -Force | Out-Null
+            Remove-Item $tempFile -Force -ErrorAction SilentlyContinue
+        }
     }
     catch {
-        Write-Host "Failed to initialize log blob: $($_.Exception.Message)" -ForegroundColor Red
-        Write-Host "Check if storage account '$StorageAccountName' and container '$ContainerName' exist" -ForegroundColor Red
-        Write-Host "Also verify SAS token permissions and expiration" -ForegroundColor Red
-        
-        # Fallback to local file
-        $localLogFile = ".\script-execution.log"
-        $initialLog = "=== Download Script execution started at $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ===`nEnvironment: $EnvironmentName`n"
-        Set-Content -Path $localLogFile -Value $initialLog -NoNewline
-        Write-Host "Created local log file as fallback: $localLogFile" -ForegroundColor Yellow
-        $script:LoggingInitialized = $true
+        Write-Host "Failed to write download buffer to blob: $($_.Exception.Message)" -ForegroundColor Red
+        throw
     }
 }
 
