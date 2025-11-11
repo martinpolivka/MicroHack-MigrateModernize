@@ -40,7 +40,6 @@ function Get-AuthenticationHeaders {
             "authorization" = "Bearer $token"
             "content-type"  = "application/json"
         }
-        Write-LogToBlob ($headers | Out-String)
         Write-LogToBlob "Authentication headers obtained successfully"
         
         return $headers
@@ -284,8 +283,8 @@ function Register-MigrateTools {
     
     try {
         $Headers = Get-AuthenticationHeaders
-        $registerToolApi = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$ResourceGroupName/providers/Microsoft.Migrate/MigrateProjects/$migrateProjectName/registerTool?api-version=2020-06-01-preview"
-     
+        $registerToolApi = "https://management.azure.com/subscriptions/$SubscriptionId/resourceGroups/$ResourceGroupName/providers/Microsoft.Migrate/MigrateProjects/$MigrateProjectName/registerTool?api-version=2020-06-01-preview"
+        
         Write-LogToBlob "Registering Server Discovery tool"
         Write-LogToBlob "URI: $registerToolApi"
         Invoke-RestMethod -Uri $registerToolApi `
