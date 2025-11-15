@@ -1,6 +1,13 @@
 
 # Excercise 3 - .NET App modernization
 
+Before we begin, make sure you are logged into GitHub: [https://github.com/enterprises/skillable-events](https://github.com/enterprises/skillable-events "https://github.com/enterprises/skillable-events")
+
+> [!Knowledge]
+> Use the Azure Portal credentials from the resources tab.
+> 
+> Make sure you don't close the GitHub site. Otherwise GitHub Copilot might not work due to the restrictions of the lab environment.
+
 Let us get our hands dirty on some code.
 
 We want to use GitHub Copilot to modernize our .NET application. To achieve that we have two options.
@@ -29,9 +36,9 @@ Choose your path :)
 
 # 3.1 Clone the repository
 
-The first target application we will migrate is *Contoso University*.
+The first application we will migrate is *Contoso University*.
 
-If you are not logged in already, log in to GitHub and open the [link to the repository](https://github.com/crgarcia12/migrate-modernize-lab "link to the repository").
+Open the following [link to the repository](https://github.com/crgarcia12/migrate-modernize-lab "link to the repository").
 
 Fork your own copy of the repository. On the upper right click on the fork dropdown and then on *Create a new fork*.
 
@@ -108,17 +115,17 @@ TODO: add descriptions of what happens next
 2. Open the GitHub Copilot Chat. A popup will appear asking you to sign in to GitHub. Follow the steps to sign in.
 TODO: add credentials! 
 3. Select Agent mode and the model of your choice  
-   > We recommend Claude Sonnet 4 or 4.5.
+   > We recommend Claude Sonnet 4 or 4.5. They generally take longer to respond, but the results are usually good. But feel free to experiment with different models.
 
 4. Use this initial prompt to start the assessment step:
 
-   *I would like to modernize this .NET application to .NET 9. Assess this project and tell me about the technical foundation, dependencies that need to be updated, and give me a brief summary of the implemented business logic and everything else you think is relevant for a modernization. Save the assessment results in an assessment.md in the workspace's root folder. Do not make any code changes yet.*
+   *I would like to modernize this .NET application to .NET 9. Assess this project and tell me about the technical foundation, dependencies that need to be updated, and give me a brief summary of the implemented business logic and everything else you think is relevant for a modernization. Save the assessment results in an assessment.md in the workspace's root folder. Include all the relevant information in the assesment.md, but stay as short and precise as possible. Ensure there is no redundant information. Do not make any code changes yet.*
 
 5. Wait until GitHub Copilot is done and have a look at the *assessment.md*. Results may vary. If you are for any reason not happy with the results, you have multiple options:
 
    a) Open a new GitHub Copilot chat (you can click plus on top of the chat window) and run the initial prompt again, but change the file name to *assessment1.md* (or something similar). After the second assessment run is done, ask GitHub Copilot to compare both documents and fact check itself. An example prompt could be:
 
-   *Check the assessment.md and assessment1.md files and compare them. If there are significant differences, check again with the code base and reevaluate the results. Merge all important information into one assessment.md and delete the other file.*
+   *Check the assessment.md and assessment1.md files and compare them. If there are significant differences, check again with the code base and reevaluate the results. Merge all important information into one assessment.md, ensure there is no redundant information, stay precise and delete the other file.*
 
 **OR**
 
@@ -130,7 +137,7 @@ If you are happy with the assessment results, continue with the next step of the
 
 # 3.3 Upgrade the app to .NET 9
 
-Next step is to upgrade the application to .NET 9 and update the outdated dependencies and packages as they are known to have security vulnerabilities.
+The next step is to upgrade the application to .NET 9 and update the outdated dependencies and packages as they are known to have security vulnerabilities.
 
 ## 1) Visual Studio
 1. Right click in the project and select *Modernize*
@@ -159,4 +166,54 @@ TODO: Point to some details
 TODO: See the lists of commit, if we managed to fork the repo
 
 ## 2) Visual Studio Code
+
+1. Open a fresh new window of GitHub Copilot Chat
+2. Use the following prompt to plan the upgrade:
+
+*I would like to upgrade this .NET application to .NET 9. Consider all the information we already collected in the assessment.md. Create a step-by-step plan. Make sure to include updating outdated dependencies and packages that are known to have security vulnerabilities. Do not make any code changes for now, just create the plan. Add the step-by-step plan to the assessment.md. If there is already a migration plan in the assessment.md, edit and extend it.*
+
+3. After the plan is created, use the following prompt to perform the upgrade:
+
+*Now upgrade the application to .NET 9 following the step-by-step plan we created before in the assessment.md. Make sure to update all outdated dependencies and packages that are known to have security vulnerabilities. After you finish, ensure the application builds without errors. If there are any errors, fix them.*
+
+> [!Hint] If you you are an opinionated dev you can give GitHub Copilot more specific instructions e.g. about the folder structure, naming conventions, etc.
+
+4. Observe the changes GitHub Copilot is doing. Inbetween you have to allow certain changes like the editing of sensitive files or the execution of terminal commands. It also may ask you that it has now worked for a while and if it should continue. Allow it to continue. If you observe that it is stuck or working in the wrong direction you can always stop it by clicking the stop button on the lower right and adjust your prompt or start over completely by undoing the changes and opening a new chat.
+
+TODO: insert stop button image here
+
+5. After GitHub Copilot has finished the upgrade it will try to build the application (we prompted it to do so). If not, you can prompt it to do it:
+
+*Test and run the application.* or *Build and run the application with `dotnet run`.*
+
+If the build fails, it will try to fix the errors itself. It will have applied a lot of changes. Take your time to review them and click on *Keep* once you are done.
+
+TODO: insert keep image here
+
+> [!Hint] If you have the feeling that GitHub Copilot or VS Code itself is buggy, you can reload the window. This helps in 98% of the cases, for the other 2% just restart VS Code.
+> TODO: add screenshot of reload window
+
+6. If the application is up and running, well done! You have successfully upgraded the application to .NET 9. Click next to continue.
+
+===
+
+
+# Modernization part 2: Prepare for cloud
+
+We have upgraded an eight years old application, to the latest version of DorNet.
+Lets now find out if we can host it in a modern PaaS service
+
+1. [ ] Right click in the project, and select `Modernize`
+2. [ ] This time, we will select Migrate to Azure. Don't forget to send the message!
+> !IMAGE[0070.png](https://raw.githubusercontent.com/crgarcia12/migrate-modernize-lab/refs/heads/main/lab-material/media/0070.png)
+
+3. [ ] Copilot made a detailed report for us. Let's take a look at it
+       Notice that the report can be exported and shared with other developers in the top right corner
+4. Now, let's run the Mandatory Issue: Windows Authenticatio. Click in `Run Task`
+> !IMAGE[0080.png](https://raw.githubusercontent.com/crgarcia12/migrate-modernize-lab/refs/heads/main/lab-material/media/0080.png)
+
+
+===
+# Excercise 4 - Java App modernization (julia)
+
 
