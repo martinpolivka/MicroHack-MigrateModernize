@@ -4,9 +4,9 @@
 ##############   CONFIGURATIONS   ###################
 ######################################################
 
-$SkillableEnvironment = $false
-$EnvironmentName = "crgmig4" # Set your environment name here for non-Skillable environments
-$ScriptVersion = "10.0.0"
+$SkillableEnvironment = $true
+$EnvironmentName = "crgmig5" # Set your environment name here for non-Skillable environments
+$ScriptVersion = "11.0.0"
 
 ######################################################
 ##############   INFRASTRUCTURE FUNCTIONS   #########
