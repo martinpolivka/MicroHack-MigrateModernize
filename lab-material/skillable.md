@@ -860,7 +860,7 @@ Click in Upgrade Java Runtime & Frameworks
 
 ===
 
-# Preparation
+## Preparation
 
 1. [ ] Open the browser and navigate to +++https://github.com/enterprises/skillable-events/+++
 2. [ ] Authenticate with your Azure credentials
@@ -893,6 +893,9 @@ This script will clone a repo with the Java application, and open VS code on tha
 Next let's begin our modernization work. 
 
 ===
+
+## Run the Application
+
 Let's first run the application.
 
 1. [ ] Go to the menu **View** -> **Terminal** 
@@ -916,6 +919,8 @@ Once both console windows show messages that the apps are running, you should be
 You can now close the application, by closing the console windows that were open.
 
 ===
+
+## Migrate the Application
 
 1. Open the application in Visual Studio Code
 2. Ensure that Claude Sonnet 4.5 is selected as the model in the GitHub Copilot chat pane.
@@ -947,7 +952,7 @@ You can now close the application, by closing the console windows that were open
 
 ---
 
-### Overview of the Assessment
+## Overview of the Assessment
 
 Assessment results are consumed by GitHub Copilot App Modernization (AppCAT). AppCAT examines the scan findings and produces targeted modernization recommendations to prepare the application for containerization and migration to Azure.
 
@@ -997,7 +1002,7 @@ Choose how deep AppCAT should inspect the project.
 
 ===
 
-### Review the Assessment results
+## Review the Assessment results
 
 After the assessment completes, you'll see a success message in the GitHub Copilot chat summarizing what was accomplished:
 
@@ -1020,7 +1025,7 @@ Key Findings:
 
 This prioritization framework ensures teams focus on blocking issues first while identifying opportunities for optimization and future enhancements.
 
-### Review Specific Findings
+## Review Specific Findings
 
 Click on individual issues in the report to see detailed recommendations. In practice, you would review all recommendations and determine the set that aligns with your migration and modernization goals for the application.
 
@@ -1037,7 +1042,7 @@ Click on individual issues in the report to see detailed recommendations. In pra
 
 ===
 
-### Take Action on Findings
+## Take Action on Findings
 
 Based on the assessment findings, GitHub Copilot app modernization provides two types of migration actions to assist with modernization opportunities:
 
@@ -1073,7 +1078,7 @@ To Begin Migration type **"Continue"** in the GitHub Agent Chat to start the cod
 
 ===
 
-### Review Migration Process and Progress Tracking
+## Review Migration Process and Progress Tracking
 
 Once you confirm with **"Continue"**, the migration tool begins implementing changes using a structured, two-phase approach designed to ensure traceability and commit changes to a new dedicated code branch for changes to enable rollback if needed.
 <!--
@@ -1135,7 +1140,7 @@ The migration process updated the following configuration files:
 
 ===
 
-### Validation and Fix Iteration Loop
+## Validation and Fix Iteration Loop
 
 After implementing the migration changes, the App Modernization tool automatically validates the results through a comprehensive testing process to ensure the migration changes are secure, functional, and consistent.
 
@@ -1172,7 +1177,7 @@ The tool includes intelligent error detection capabilities that automatically id
 
 ===
 
-### Run the App ###
+## Run the App 
 
 After you have completed the modernization task, run the application to ensure the task was successful:
 
@@ -1187,7 +1192,7 @@ After you have completed the modernization task, run the application to ensure t
 
 ===
 
-### Other Tasks ###
+## Other Tasks 
 
 Continue modernization your app by selecting another task and completing the modernization steps.
 
