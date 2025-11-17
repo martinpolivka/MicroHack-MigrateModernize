@@ -135,6 +135,22 @@ try {
         $FileSize = (Get-Item $TempScriptPath).Length
         if ($FileSize -gt 0) {
             Write-DownloadLogToBlob "File size: $FileSize bytes"
+
+            # Log the first 10 lines of the downloaded script for troubleshooting
+            try {
+                $PreviewLines = Get-Content -Path $TempScriptPath -TotalCount 10
+                if ($PreviewLines -and $PreviewLines.Count -gt 0) {
+                    Write-DownloadLogToBlob "First 10 lines of downloaded script:"
+                    Write-DownloadLogToBlob ($PreviewLines -join [Environment]::NewLine)
+                }
+                else {
+                    Write-DownloadLogToBlob "Downloaded script appears to be empty when reading content." "WARN"
+                }
+            }
+            catch {
+                Write-DownloadLogToBlob "Failed to read first 10 lines of downloaded script: $($_.Exception.Message)" "WARN"
+            }
+
             # Unblock the downloaded file to remove the "downloaded from internet" flag
             Write-DownloadLogToBlob "Unblocking downloaded script..."
             try {
