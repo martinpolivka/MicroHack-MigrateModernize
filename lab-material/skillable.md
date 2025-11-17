@@ -28,7 +28,7 @@ The objective of this lab is to explore the different steps involved in a real-l
 * Modernize a .NET application using GitHub Copilot and deploy it to Azure.
 
 #### Exercise 4: Migrate a Java application:
-* Modernize a Java application using GitHub Copilot and deploy it to Azure.
+* Modernize a Java application using GitHub Copilot.
 
 
 Each exercise is independent. If you get stuck in any of them, you can proceed to the next one
@@ -78,8 +78,6 @@ Let's explore what's inside in the next chapter
 
 This virtual machine represents an on-premises server.
 It has nested virtualization. Inside you will find several VMs.
-
-> ![Screenshot](https://raw.githubusercontent.com/crgarcia12/migrate-modernize-lab/refs/heads/main/lab-material/media/0020.png)
 
 In the Windows menu, open the `Hyper-V Manager` to discover the inner VMs.
 
@@ -867,9 +865,9 @@ Again you may be asked to allow certain executions of commands and changes. Allo
 
 
 ===
-# Exercise 4 - Java App modernization (julia)
+# Exercise 4 - Java App modernization
 
-Install Java 8: [Download Java 8](https://adoptium.net/download?link=https%3A%2F%2Fgithub.com%2Fadoptium%2Ftemurin8-binaries%2Freleases%2Fdownload%2Fjdk8u472-b08%2FOpenJDK8U-jdk_x64_windows_hotspot_8u472b08.msi&vendor=Adoptium)
+<!-- Install Java 8: [Download Java 8](https://adoptium.net/download?link=https%3A%2F%2Fgithub.com%2Fadoptium%2Ftemurin8-binaries%2Freleases%2Fdownload%2Fjdk8u472-b08%2FOpenJDK8U-jdk_x64_windows_hotspot_8u472b08.msi&vendor=Adoptium)
 
 Open Docker Desktop
 
@@ -901,10 +899,7 @@ Make sure you have selected Sonnet 4.5
 
 Click in Upgrade Java Runtime & Frameworks
 
-===
-
-
-===
+=== --> 
 
 ## Application Modernization
 
@@ -959,20 +954,21 @@ Let's first run the application.
 1. [ ] In the terminal window, run ```scripts\startapp.cmd```
 
 
-The first time you run the applications will take some time, because Docker will pull diferent container images like RabbitMQ. <br>
-If you get ask to grant permissions for Docker, Java or other applications to get Internet or private network access, allow it.
+The first time you run the applications will take some time, because Docker will pull diferent container images like RabbitMQ and Postgres. <br>
 
-Once both consoles are running, you should be able to open the browser and navigate to  +++http://localhost:8080+++
+If you are asked to grant permissions for Docker, Java or other applications to get Internet or private network access, allow it.
+
+Once both console windows show messages that the apps are running, you should be able to open the browser and navigate to  +++http://localhost:8080+++
 
  ![Screenshot](https://raw.githubusercontent.com/crgarcia12/migrate-modernize-lab/refs/heads/main/lab-material/media/02004.png)
 
-You can now close the application, by closing the consoles that were open
-
+You can now close the application, by closing the console windows that were open.
 
 ===
 
-1. Select  `GitHub Copilot app modernization` extension
-1. Navigate the Extension Interface and click **Migrate to Azure** to begin the modernization process.
+1. Open the application in Visual Studio Code
+2. Select  `GitHub Copilot app modernization` extension in the Activity bar on the left
+3. Navigate the Extension Interface and click **Migrate to Azure** to begin the modernization process.
 	!IMAGE[screenshot](https://raw.githubusercontent.com/crgarcia12/migrate-modernize-lab/refs/heads/main/lab-material/media/02001.png)
 
 <!-- 1. Allow the GitHub Copilot app modernization to sign in to GitHub 
@@ -1076,16 +1072,16 @@ This prioritization framework ensures teams focus on blocking issues first while
 
 Click on individual issues in the report to see detailed recommendations. In practice, you would review all recommendations and determine the set that aligns with your migration and modernization goals for the application.
 
-> [!note] For this lab, we will spend our time focusing on one modernization recommendation: updating the code to use modern authentication via Azure Database for PostgreSQL Flexible Server with Entra ID authentication.
+> [!note] For this lab, we will spend our time focusing on one modernization recommendation: updating the code to use Azure Blob Storage instead of AWS S3 buckets.
 
 
 | Aspect | Details |
 |--------|---------|
-| **Modernization Lab Focus** | Database Migration to Azure PostgreSQL Flexible Server |
-| **What was found** | PostgreSQL database configuration using basic authentication detected in Java source code files |
-| **Why this matters** | External dependencies like on-premises databases with legacy authentication must be resolved before migrating to Azure |
-| **Recommended solution** | Migrate to Azure Database for PostgreSQL Flexible Server |
-| **Benefits** | Fully managed service with automatic backups, scaling, and high availability |
+| **Modernization Lab Focus** | Storage Migration (AWS S3) |
+| **What was found** | Migrate from AWS S3 to Azure Blob Storage for scalable and secure storage in Azure |
+| **Why this matters** | Migrating an application requires dependencies like storage to migrated alongside the code and data.  |
+| **Recommended solution** | Migrate from AWS S3 to Azure Blob Storage |
+| **Benefits** | Migrating from S3 to Azure Blob Storage enables seamless integration with other Azure services (like Azure Functions, App Service, and Azure AI), unified identity management through Azure Active Directory, and potential cost savings through features like automated tiering and lifecycle management policies. |
 
 ===
 
@@ -1097,45 +1093,41 @@ Based on the assessment findings, GitHub Copilot app modernization provides two 
 
 2. Using the **unguided migrations** ("Ask Copilot" button), which provide AI assistance with context aware guidance and code suggestions for more complex or custom scenarios.
 
-!IMAGE[module2-step11-guided-migration-vs-copilot-prompts.png](instructions310381/module2-step11-guided-migration-vs-copilot-prompts.png)
+!IMAGE[4somda23.jpg](instructions310257/4somda23.jpg)
 
-For this workshop, we'll focus on one modernization area that demonstrates how to externalize dependencies in the workload to Azure PaaS before deploying to AKS Automatic. We'll migrate from self-hosted PostgreSQL with basic authentication to Azure PostgreSQL Flexible Server using Entra ID authentication with AKS Workload Identity.
+For this workshop, we'll focus on one modernization area that demonstrates how to externalize dependencies in the workload to Azure PaaS before deploying to app service. We'll migrate from AWS S3 buckets to Azure Blob Storage.
 
-### Select PostgreSQL Migration Task
+### Select AWS S3 Task
 
-Begin the modernization by selecting the desired migration task. For our Spring Boot application, we will migrate to Azure PostgreSQL Flexible Server using the Spring option. The other options shown are for generic JDBC usage.
+Begin the modernization by selecting the desired migration task. For our java application, we will migrate to Azure Blob Storage.  You can expand the migration task to see detail about what will happen during the task and an explanation of why it's important to our modernization.
 
-!IMAGE[module2-step12-select-postgres-migration-task.png](instructions310381/module2-step12-select-postgres-migration-task.png)
+!IMAGE[uoobnjjf.jpg](instructions310257/uoobnjjf.jpg)
 
-> [!note]: Choose the "Spring" option for Spring Boot applications, as it provides Spring-specific optimizations and configurations. The generic JDBC options are for non-Spring applications.
+### Execute AWS S3 Migration Task
 
-### Execute Postgres Migration Task
+Click the **Run Task** button described in the previous section to kick off the modernization changes needed in the Asset Manager app. This will update the Java code to work Azure Blob Storage instead of AWS S3.
 
-Click the **Run Task** button described in the previous section to kick off the modernization changes needed in the PetClinic app. This will update the Java code to work with PostgreSQL Flexible Server using Entra ID authentication.
-
-!IMAGE[module2-step12-run-migration-task.png](instructions310381/module2-step12-run-migration-task.png)
-
-The tool will execute the `appmod-run-task` command for `managed-identity-spring/mi-postgresql-spring`, which will examine the workspace structure and initiate the migration task to modernize your Spring Boot application for Azure PostgreSQL with managed identity authentication. If prompted to run shell commands, please review and allow each command as the Agent may require additional context before execution.
+The tool will execute the `appmod-run-task` command for `s3-to-azure-blob-storage` for the Java project, which will examine the workspace structure and initiate the migration task to modernize your java for Azure Blob Storage. If prompted to run shell commands, please review and allow each command as the Agent may require additional context before execution.
 
 ### Review Migration Plan and Begin Code Migration
 
-The App Modernization tool has analyzed your Spring Boot application and generated a comprehensive migration plan in its chat window and in the `plan.md` file. This plan outlines the specific changes needed to implement Azure Managed Identity authentication for PostgreSQL connectivity.
+The App Modernization tool has analyzed your java application and generated a comprehensive migration plan in its chat window and in the `plan.md` file. This plan outlines the specific changes needed to implement Azure Blob Storage instead of AWS S3.
 
-!IMAGE[module2-step14-review-migration-plan.png](instructions310381/module2-step14-review-migration-plan.png)
+!IMAGE[wpoydt5u.jpg](instructions310257/wpoydt5u.jpg)
 
 To Begin Migration type **"Continue"** in the GitHub Agent Chat to start the code refactoring.
 
 ### Review Migration Process and Progress Tracking
 
 Once you confirm with **"Continue"**, the migration tool begins implementing changes using a structured, two-phase approach designed to ensure traceability and commit changes to a new dedicated code branch for changes to enable rollback if needed.
-
+<!--
 **Two-Phase Migration Process:**
 
 > [!knowledge] 
 > **Phase 1: Update Dependencies**
 - **Purpose**: Add the necessary Azure libraries to your project.
 - **Changes made**:
-  - Updates `pom.xml` with Spring Cloud Azure BOM and PostgreSQL starter dependency
+  - Updates `pom.xml` with Azure SDK BOM 
   - Updates `build.gradle` with corresponding Gradle dependencies
   - Adds Spring Cloud Azure version properties.
 
@@ -1145,7 +1137,7 @@ Once you confirm with **"Continue"**, the migration tool begins implementing cha
 - **Changes made**:
   - Updates `application.properties` to configure PostgreSQL with managed identity (9 lines added, 2 removed)
   - Updates `application-postgres.properties` with Entra ID authentication settings (5 lines added, 4 removed)
-  - Replaces username/password authentication with managed identity configuration.
+  - Replaces username/password authentication with managed identity configuration. -->
 
 **Progress Tracking:**
 The `progress.md` file provides real-time visibility into the migration process:
@@ -1222,166 +1214,25 @@ The tool includes intelligent error detection capabilities that automatically id
 > **User Control:**
 > At any point during this validation process, you may interrupt the automated fixes and manually resolve issues if you prefer to handle specific problems yourself. The tool provides clear feedback on what it's attempting to fix and allows you to take control when needed at any time.
 >
->This systematic approach ensures your Spring Boot application is successfully modernized for Azure PostgreSQL with Entra ID authentication while maintaining full functionality.
+>This systematic approach ensures your java application is successfully modernized for Azure Blob Storage while maintaining full functionality.
 > [!hint] 
 
-===
+After you have completed the modernization task, run the application to ensure the task was successful:
 
-##  Generate Containerization Assets with AI
+1. [ ] Go to the menu **View** -> **Terminal** 
+1. [ ] If the **pwsh** terminal is missing, click the + symbol and select **New Terminal**` as shown in the picture bellow
 
-**What You'll Do:** Use AI-powered tools to generate Docker and Kubernetes manifests for your modernized Spring Boot application.
-
-**What You'll Learn:** How to create production-ready containerization assets - including optimized Dockerfiles and Kubernetes manifests configured with health checks, secrets, and workload identity.
-
----
-
-### Using Containerization Assist
-
-In the GitHub Copilot agent chat, use the following prompt to generate production-ready Docker and Kubernetes manifests:
-
-```prompt
-/petclinic Help me containerize the application. Create me a new Dockerfile and update my ACR with @lab.CloudResourceTemplate(LAB502).Outputs[acrLoginServer]
-```
-
-> [!note] To expedite your lab experience, you can allow the Containerization Assist MCP server to run on this Workspace. Select **Allow in this Workspace** or **Always Allow**.
-> 
-> !IMAGE[ca-mcp-allow.png](instructions310381/ca-mcp-allow.png)
+> [+Hint] Screenshot
 >
-> You will also need to allow the MCP server to make LLM requests. 
-> Select **Always**.
-> !IMAGE[ca-mcp-llm.png](instructions310381/ca-mcp-llm.png)
+> ![Screenshot](https://raw.githubusercontent.com/crgarcia12/migrate-modernize-lab/refs/heads/main/lab-material/media/02002.png)
 
-The Containerization Assist MCP Server will analyze your repository and generate:
-
-- **Dockerfile**: Multi-stage build with optimized base image
-
-- **Kubernetes Deployment**: With Azure workload identity, PostgreSQL secrets, health checks, and resource limits
-
-- **Kubernetes Service**: LoadBalancer configuration for external access
-
-**Expected Result**: Kubernetes manifests in the `k8s/` directory.
-
-> [!tip] You are almost there. You will deploy the AI generated files, but they might need some tuning later. Before deploying it to your cluster, double check the image location, the use of workload identity and if the service connector secret reference in the deployment file are correct to your environment.
-
-
-### Build and Push Container Image to ACR
-
-Build the containerized application and push it to your Azure Container Registry:
-
-1. In your terminal window, login to ACR using Azure CLI
-
-	```bash
-	az acr login --name @lab.CloudResourceTemplate(LAB502).Outputs[acrName]
-  
-	```
-
-1. Build the Docker image in Azure Container Registry
-
-	```bash
-	az acr build -t petclinic:0.0.1 . -r @lab.CloudResourceTemplate(LAB502).Outputs[acrName]
-	```
+1. [ ] In the terminal window, run ```scripts\startapp.cmd```
 
 ===
 
-## Deploy to AKS
+## Other Tasks ##
 
-**What You'll Do:** Deploy the modernized application to AKS Automatic using Service Connector secrets for passwordless authentication with PostgreSQL.
-
-**What You'll Learn:** Kubernetes deployment with workload identity, Service Connector integration, and testing deployed applications with Entra ID authentication.
-
----
-
-> [!knowledge] **About AKS Automatic:** AKS Automatic is a new mode for Azure Kubernetes Service that provides an optimized and simplified Kubernetes experience. It offers automated cluster management, built-in security best practices, intelligent scaling, and pre-configured monitoring - making it ideal for teams who want to focus on applications rather than infrastructure management.
-
-### Deploy the application to AKS Automatic
-
-Using Containerization Assist we have built a Kubernetes manifest for the Petclini application. In the next steps we will deploy it to the AKS Automatic cluster and verify that it is working:
-
-1. Deploy the application:
-
-	```bash
-	kubectl apply -f k8s/petclinic.yaml
-	```
-
-1.  Monitor deployment status
-
-	```bash
-	kubectl get pods,services,deployments
-	```
-
-	It might take a minute for the AKS Automatic cluster to provision new nodes for the workload so it is normal to see your pods in a `Pending` state until the new nodes are available. You can verify is there are nodes available with the `kubectl get nodes` command.
-
-Expect:
-
-```
-NAME                                    READY   STATUS              RESTARTS   AGE
-petclinic-deployment-5f9db48c65-qpb8l   0/1     Pending             0          2m2s
-```
-
-### Verify Deployment and Connectivity
-
-Test the deployed application and verify Entra ID authentication:
-
-1. Port forward to access the application
-
-	```bash
-  kubectl port-forward svc/spring-petclinic-service 9090:8080
-	```
-1. To test the application, open a new tab in Microsoft Edge and go to `http://localhost:9090`
-
-
-### Validate Entra ID Authentication
-
-Verify that the application is using passwordless authentication:
-
-1. Check environment variables in the pod (get first pod with label)
-	```bash
-	POD_NAME=$(kubectl get pods -l app=spring-petclinic -o jsonpath='{.items[0].metadata.name}')
-	kubectl exec $POD_NAME -- env | grep POSTGRES
-	```
-
-	Expected output:
-
-	```bash
-	AZURE_POSTGRESQL_PORT=5432
-	AZURE_POSTGRESQL_DATABASE=petclinic
-	AZURE_POSTGRESQL_USERNAME=aad_pg
-	AZURE_POSTGRESQL_CLIENTID=1094a914-1837-406a-ad58-b9dcc499177a
-	AZURE_POSTGRESQL_HOST=db-petclinic55954159.postgres.database.azure.com
-	AZURE_POSTGRESQL_SSL=true
-	POSTGRES_USER=aad_pg
-	```
-
-1. Verify no password environment variables are present
-
-	```bash
-	kubectl exec $POD_NAME -- env | grep -i pass
-	```
-
-	Expected output:
-  
-	```bash
-	SPRING_DATASOURCE_AZURE_PASSWORDLESS_ENABLED=true
-	```
-
-1. Check application logs for successful authentication
-
-	```bash
-	kubectl logs -l app=spring-petclinic --tail=100 | grep -i "hibernate"
-	```
-
-	Expected outcome:
-
-	```bash
-	[...]
-	Hibernate: drop table if exists pets cascade
-	Hibernate: drop table if exists specialties cascade
-	Hibernate: drop table if exists types cascade
-	Hibernate: drop table if exists vet_specialties cascade
-	[...]
-	```
-
-**Expected Outcome:** The application is successfully deployed to AKS with passwordless authentication to PostgreSQL using Entra ID and workload identity.
+Continue modernization your app by selecting another task and completing the modernization steps.
 
 === 
 
