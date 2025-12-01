@@ -22,7 +22,7 @@ The infrastructure consists of different components
    - Windows VM that simulates on-premises servers
    - Azure Migrate project for assessment and discovery
 
-2. **Terraform Infrastructure** (`../vm-creation-infra/terraform/`) - Host environment creation for:
+2. **Terraform Infrastructure** (`../vm-creation/terraform/`) - Host environment creation for:
    - Multiple VM environments (mm1, mm3)
    - Hyper-V host infrastructure
    - Development and testing environments
@@ -88,7 +88,7 @@ The Bicep deployment creates the same resources as the ARM template but in a mod
 - `virtual-network.bicep` - VNet and subnet configurations
 - `windows-vm.bicep` - Windows VM with Hyper-V capabilities
 
-### Terraform (`../vm-creation-infra/terraform/`)
+### Terraform (`../vm-creation/terraform/`)
 
 The Terraform configuration creates VM host environments:
 
@@ -124,7 +124,7 @@ Wrapper script that:
 - Executes the configuration script non-interactively
 - Handles logging to Azure Blob Storage
 
-#### `setup.ps1` (`../vm-creation-infra/setup.ps1`)
+#### `setup.ps1` (`../vm-creation/setup.ps1`)
 VM setup script that:
 - Installs SQL Server modules and dependencies
 - Configures IIS and .NET Framework features
@@ -209,7 +209,7 @@ az deployment group create \
 
 ```bash
 # Navigate to terraform directory
-cd vm-creation-infra/terraform
+cd vm-creation/terraform
 
 # Initialize Terraform
 terraform init
