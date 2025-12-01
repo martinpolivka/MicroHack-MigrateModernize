@@ -8,7 +8,7 @@ $SkillableEnvironment = $false
 $ScriptVersion = "16.0.0"
 $EnvironmentName = "" # Globally unique! Set your environment name here
 
-if( $EnvironmentName -eq "" ) {
+if($EnvironmentName -eq "" ) {
     $EnvironmentName = "lab" + (Get-Date -Format "yyMMddHHmmss")
 }
 
