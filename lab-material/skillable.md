@@ -732,7 +732,7 @@ In the repository view click on *<> Code* and in the tab *Local* choose *HTTPS* 
 
 It is not required for the lab, but if you want you can run the app in IIS Express (Microsoft Edge).
 
-!IMAGE[0030.png](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0030.png)
+![0030.png](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0030.png)
 
 Edge will open and you will see the application running at `https://localhost:44300`
 
@@ -744,7 +744,7 @@ The first step is to do a code assessment, followed by a complete upgrade. For t
 
 1. Right click in the project and select *Modernize*
 
-!IMAGE[0040.png](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0040.png)
+![0040.png](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0040.png)
 
 > [!Hint] If GitHub Copilot asks you to sign in, click on *Already have an account? Sign in* and follow the steps to sign in to GitHub.
 
@@ -766,7 +766,7 @@ Next we want to deploy our modernized application to Azure App Service.
 
 1. Right click in the project, and select *Modernize* again
 
-!IMAGE[0040.png](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0040.png)
+![0040.png](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0040.png)
 
 2. In the GitHub Copilot Chat window, click on *Migrate to Azure*. It will paste this exact message in the chat window. Make sure you send it that GitHub Copilot can start working on the task.
 
@@ -774,7 +774,7 @@ Next we want to deploy our modernized application to Azure App Service.
 
 3. While GitHub Copilot is working, let's have a look at the assessment report it generated. On the upper right you can either import or export the report. But you can also kick of specific tasks to resolve **Cloud Readiness Issues** here. Exactly what we want to do, because we want to deploy to Azure.
 
-!IMAGE[0080.png](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0080.png)
+![0080.png](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0080.png)
 
 4. Begin with clicking on *Migrate from Windows AD to Microsoft Entra ID*. If GitHub Copilot does not pick up tasks automatically, you can always come back to the *dotnet-upgrade-report.md* file and click on the tasks you want to resolve.
 
@@ -926,7 +926,7 @@ You can now close the application, by closing the console windows that were open
 2. Ensure that Claude Sonnet 4.5 is selected as the model in the GitHub Copilot chat pane.
 3. Select  `GitHub Copilot app modernization` extension in the Activity bar on the left
 4. Navigate the Extension Interface and click **Migrate to Azure** to begin the modernization process.
-	!IMAGE[screenshot](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/02001.png)
+	![screenshot](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/02001.png)
 
 <!-- 1. Allow the GitHub Copilot app modernization to sign in to GitHub 
 	!IMAGE[ghcp-allow-signin.png](instructions310381/ghcp-allow-signin.png)
@@ -944,7 +944,7 @@ You can now close the application, by closing the console windows that were open
 	!IMAGE[appcat-install.png](instructions310381/appcat-install.png) -->
 
 > [!hint] You can follow the progress of the upgrade by looking at the Terminal in vscode
-!IMAGE[assessment-rules.png](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/02005.png)
+![assessment-rules.png](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/02005.png)
 
 <!-- Also note that you might be prompted to allow access to the language models provided by GitHub Copilot Chat. Click on **Allow**
 
