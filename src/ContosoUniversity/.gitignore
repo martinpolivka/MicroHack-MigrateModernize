@@ -26,3 +26,8 @@ Uploads/web.config
 *.ldf
 App_Data/*.mdf
 App_Data/*.ldf
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
