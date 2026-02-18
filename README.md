@@ -81,6 +81,101 @@ The lab environment provides:
 - Challenge 4: 60-75 minutes
 - **Total: 3-4 hours**
 
+### Alternative: Using GitHub Codespaces
+
+If you don't have the required software (Visual Studio 2022, VS Code, Docker Desktop, JDK, Maven) installed locally, you can use **GitHub Codespaces** to complete the modernization challenges (Challenge 3 and Challenge 4) in a pre-configured cloud development environment.
+
+**What is GitHub Codespaces?**
+
+GitHub Codespaces provides a complete, configurable development environment in the cloud. It comes pre-installed with development tools and can run directly in your browser or through VS Code, eliminating the need for local software installation.
+
+**How to Use GitHub Codespaces for Application Modernization:**
+
+1. **Fork the Repository:**
+   - Navigate to `https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize`
+   - Click the "Fork" button in the top-right corner
+   - Select your account as the owner and click "Create fork"
+
+2. **Launch GitHub Codespaces:**
+   - In your forked repository, click the green "Code" button
+   - Select the "Codespaces" tab
+   - Click "Create codespace on main" (or the branch you want to work on)
+   - Wait for the codespace to initialize (this may take 1-2 minutes)
+
+3. **Install GitHub Copilot App Modernization Extension:**
+   - Once the codespace opens, go to the Extensions view (Ctrl+Shift+X or Cmd+Shift+X)
+   - Search for "GitHub Copilot app modernization"
+   - Click "Install" on the extension by Microsoft
+   - The extension will automatically install GitHub Copilot dependencies if needed
+   - Ensure you're signed in to your GitHub account with Copilot access
+
+4. **Install Required Development Tools:**
+   
+   For **.NET Application Modernization** (Challenge 3):
+   ```bash
+   # .NET 9 SDK is typically pre-installed in Codespaces
+   # Verify installation:
+   dotnet --version
+   ```
+
+   For **Java Application Modernization** (Challenge 4):
+   ```bash
+   # Install JDK if not present
+   sdk install java 21-open
+   sdk install java 8-open
+   
+   # Maven is typically pre-installed
+   mvn --version
+   ```
+
+5. **Example Prompts for Autonomous Modernization:**
+
+   **For ASP.NET Applications:**
+   ```
+   Find the ASP.NET application in this repository (ContosoUniversity) and modernize it to the latest .NET version. Analyze the codebase, identify dependencies, upgrade to .NET 9, migrate authentication from Windows AD to Microsoft Entra ID, and ensure cloud readiness for Azure App Service deployment.
+   ```
+
+   **For Java Applications:**
+   ```
+   Find the Java application in this repository (AssetManager) and modernize it for Azure. Perform an AppCAT assessment, identify migration opportunities, upgrade from Java 8 to Java 21, migrate from AWS S3 to Azure Blob Storage, migrate from RabbitMQ to Azure Service Bus, and prepare for containerized deployment.
+   ```
+
+6. **Monitor the Autonomous Process:**
+   - GitHub Copilot will analyze your codebase and create a migration plan
+   - Review the plan in the generated `plan.md` or similar files
+   - The extension works autonomously but may prompt you to:
+     - Allow operations (click "Allow" when prompted)
+     - Confirm migration steps (type "Continue" or "Proceed")
+     - Review security validations (CVE scans)
+   - Monitor progress in real-time through the GitHub Copilot Chat panel
+
+7. **Review and Apply Changes:**
+   - After each migration task completes, review the proposed changes
+   - Check the `progress.md` or `dotnet-upgrade-report.md` files for detailed logs
+   - Click "Keep" to apply changes or "Discard" if you disagree
+   - Test the modernized application before deploying
+   - Use the integrated terminal to run builds and tests
+
+8. **Best Practices:**
+   - **Monitor actively:** While the process is autonomous, stay engaged to approve operations
+   - **Review carefully:** Check each change for correctness and security
+   - **Test incrementally:** Validate changes after each major migration step
+   - **Commit frequently:** Save your work regularly using Git in the codespace
+   - **Check validation:** Ensure all automated tests and CVE scans pass
+
+**Benefits of Using Codespaces:**
+- No local software installation required
+- Consistent development environment
+- Pre-configured with common tools
+- Accessible from any device with a browser
+- Easy collaboration and sharing
+- Integrated with GitHub workflows
+
+**Resource Management:**
+- Codespaces are billed based on compute time and storage
+- Stop or delete codespaces when not in use
+- Your work is automatically saved and can be resumed later
+
 ---
 
 ## Challenge 1 - Prepare a Migration Environment
@@ -305,6 +400,8 @@ Transform raw discovery data into actionable insights by cleaning data, grouping
 
 Modernize the Contoso University .NET Framework application to .NET 9 and deploy it to Azure App Service using GitHub Copilot's AI-powered code transformation capabilities.
 
+> **💡 Tip:** If you don't have Visual Studio 2022 installed locally, you can use **GitHub Codespaces** to complete this challenge. See the [Alternative: Using GitHub Codespaces](#alternative-using-github-codespaces) section above for setup instructions.
+
 ### Actions
 
 **Setup and Preparation:**
@@ -318,51 +415,61 @@ Modernize the Contoso University .NET Framework application to .NET 9 and deploy
 
 3. Once the fork is created, click the "Code" button and copy your forked repository URL
 
-![Copy clone URL](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/clone-url.png)
+4. **Option A - Local Development with Visual Studio 2022:**
+   - Open Visual Studio 2022
+   - Select "Clone a repository" and paste your forked repository URL
+   - Navigate to Solution Explorer and locate the ContosoUniversity project
+   - Rebuild the project to verify it compiles successfully
 
-4. Open Visual Studio 2022
-5. Select "Clone a repository" and paste your forked repository URL
-6. Navigate to Solution Explorer and locate the ContosoUniversity project
-7. Rebuild the project to verify it compiles successfully
+   **Option B - Using GitHub Codespaces:**
+   - In your forked repository on GitHub, click the green "Code" button
+   - Select "Codespaces" tab and click "Create codespace on main"
+   - Wait for the codespace to initialize
+   - Install the "GitHub Copilot app modernization" extension from the Extensions marketplace
+   - Open the ContosoUniversity project folder in the integrated terminal
+
+5. Verify the application builds successfully (for Codespaces: run `dotnet build` in the terminal)
 
 ![Application running in IIS Express](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0030.png)
 
 **Assess and Upgrade to .NET 9:**
 
-8. Right-click the ContosoUniversity project and select "Modernize"
+6. Right-click the ContosoUniversity project and select "Modernize" (or use GitHub Copilot Chat with the prompt: "Modernize this .NET application to the latest version")
 
 ![Right-click Modernize menu](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0040.png)
 
-9. Sign in to GitHub Copilot if prompted
-10. Select Claude Sonnet 4.5 as the model
-11. Click "Upgrade to a newer .NET version"
-12. Allow GitHub Copilot to analyze the codebase
-13. Review the upgrade plan when presented
-14. Allow operations when prompted during the upgrade process
-15. Wait for the upgrade to complete (marked by `dotnet-upgrade-report.md` appearing)
+7. Sign in to GitHub Copilot if prompted
+8. Select Claude Sonnet 4.5 as the model
+9. Click "Upgrade to a newer .NET version"
+10. Allow GitHub Copilot to analyze the codebase
+11. Review the upgrade plan when presented
+12. Allow operations when prompted during the upgrade process
+13. Wait for the upgrade to complete (marked by `dotnet-upgrade-report.md` appearing)
 
 **Migrate to Azure:**
 
-16. Right-click the project again and select "Modernize"
-17. Click "Migrate to Azure" in the GitHub Copilot Chat window
-18. Wait for GitHub Copilot to assess cloud readiness
+14. Right-click the project again and select "Modernize"
+15. Click "Migrate to Azure" in the GitHub Copilot Chat window
+16. Wait for GitHub Copilot to assess cloud readiness
 
 **Resolve Cloud Readiness Issues:**
-19. Open the `dotnet-upgrade-report.md` file
+17. Open the `dotnet-upgrade-report.md` file
+
+17. Open the `dotnet-upgrade-report.md` file
 
 ![Upgrade report with cloud readiness issues](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0080.png)
 
-20. Review the Cloud Readiness Issues section
-21. Click "Migrate from Windows AD to Microsoft Entra ID"
-22. Allow GitHub Copilot to implement the authentication changes
-23. Ensure all mandatory tasks are resolved
-24. Review the changes made to authentication configuration
+18. Review the Cloud Readiness Issues section
+19. Click "Migrate from Windows AD to Microsoft Entra ID"
+20. Allow GitHub Copilot to implement the authentication changes
+21. Ensure all mandatory tasks are resolved
+22. Review the changes made to authentication configuration
 
 **Deploy to Azure:**
 
-25. Allow GitHub Copilot to complete the Azure App Service deployment
-26. Verify the deployment succeeds
-27. Test the deployed application in Azure
+23. Allow GitHub Copilot to complete the Azure App Service deployment
+24. Verify the deployment succeeds
+25. Test the deployed application in Azure
 
 ### Success Criteria
 
@@ -390,91 +497,104 @@ Modernize the Contoso University .NET Framework application to .NET 9 and deploy
 
 Modernize the Asset Manager Java Spring Boot application for Azure deployment, migrating from AWS dependencies to Azure services using GitHub Copilot App Modernization in VS Code.
 
+> **💡 Tip:** If you don't have Docker Desktop, VS Code, Java, or Maven installed locally, you can use **GitHub Codespaces** to complete this challenge. See the [Alternative: Using GitHub Codespaces](#alternative-using-github-codespaces) section above for setup instructions.
+
 ### Actions
 
 **Environment Setup:**
-1. Open Docker Desktop and ensure it's running
-2 Open Terminal and run the setup commands:
-   ```bash
-   mkdir C:\gitrepos\lab
-   cd C:\gitrepos\lab
-   git clone https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize.git
-   cd .\migrate-modernize-lab\src\AssetManager\
-   code .
-   ```
-3. Login to GitHub from VS Code
-4. Install GitHub Copilot App Modernization extension if not present
+1. **Option A - Local Development:**
+   - Open Docker Desktop and ensure it's running
+   - Open Terminal and run the setup commands:
+     ```bash
+     mkdir C:\gitrepos\lab
+     cd C:\gitrepos\lab
+     git clone https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize.git
+     cd .\migrate-modernize-lab\src\AssetManager\
+     code .
+     ```
+   - Login to GitHub from VS Code
+   - Install GitHub Copilot App Modernization extension if not present
+
+   **Option B - Using GitHub Codespaces:**
+   - Fork the repository at `https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize`
+   - In your forked repository, click the green "Code" button
+   - Select "Codespaces" tab and click "Create codespace on main"
+   - Wait for the codespace to initialize (Docker is pre-installed)
+   - Install the "GitHub Copilot app modernization" extension from the Extensions marketplace
+   - Navigate to the AssetManager directory: `cd src/AssetManager`
+
+2. Ensure you're logged in to GitHub with Copilot access
 
 **Validate Application Locally:**
 
-5. Open Terminal in VS Code (View → Terminal)
-6. Run `scripts\startapp.cmd`
-7. Wait for Docker containers (RabbitMQ, Postgres) to start
-8. Allow network permissions when prompted
-9. Verify application is accessible at http://localhost:8080
-10. Stop the application by closing console windows
+3. Open Terminal in VS Code (View → Terminal)
+4. Run `scripts\startapp.cmd` (Windows) or `scripts/startapp.sh` (Linux/Codespaces)
+5. Wait for Docker containers (RabbitMQ, Postgres) to start
+6. Allow network permissions when prompted
+7. Verify application is accessible at http://localhost:8080
+8. Stop the application by closing console windows (or Ctrl+C in Codespaces)
 
 **Perform AppCAT Assessment:**
 
-11. Open GitHub Copilot App Modernization extension in the Activity bar
-12. Ensure Claude Sonnet 4.5 is selected as the model
-13. Click "Migrate to Azure" to begin assessment
-14. Wait for AppCAT CLI installation to complete
-15. Review assessment progress in the VS Code terminal
-16. Wait for assessment results (9 cloud readiness issues, 4 Java upgrade opportunities)
+9. Open GitHub Copilot App Modernization extension in the Activity bar
+10. Ensure Claude Sonnet 4.5 is selected as the model
+11. Click "Migrate to Azure" to begin assessment
+12. Wait for AppCAT CLI installation to complete
+13. Review assessment progress in the VS Code terminal
+14. Wait for assessment results (9 cloud readiness issues, 4 Java upgrade opportunities)
 
 **Analyze Assessment Results:**
 
-17. Review the assessment summary in GitHub Copilot chat
-18. Examine issue prioritization:
+15. Review the assessment summary in GitHub Copilot chat
+16. Examine issue prioritization:
     - Mandatory (Purple) - Critical blocking issues
     - Potential (Blue) - Performance optimizations
     - Optional (Gray) - Future improvements
-19. Click on individual issues to see detailed recommendations
-20. Focus on the AWS S3 to Azure Blob Storage migration finding
+17. Click on individual issues to see detailed recommendations
+18. Focus on the AWS S3 to Azure Blob Storage migration finding
 
 **Execute Guided Migration:**
 
-21. Expand the "Migrate from AWS S3 to Azure Blob Storage" task
-22. Read the explanation of why this migration is important
-23. Click the "Run Task" button to start the migration
-24. Review the generated migration plan in the chat window and `plan.md` file
-25. Type "Continue" in the chat to begin code refactoring
+19. Expand the "Migrate from AWS S3 to Azure Blob Storage" task
+20. Read the explanation of why this migration is important
+21. Click the "Run Task" button to start the migration
+22. Review the generated migration plan in the chat window and `plan.md` file
+23. Type "Continue" in the chat to begin code refactoring
 
 **Monitor Migration Progress:**
 
-26. Watch the GitHub Copilot chat for real-time status updates
-27. Check the `progress.md` file for detailed change logs
-28. Review file modifications as they occur:
+24. Watch the GitHub Copilot chat for real-time status updates
+25. Check the `progress.md` file for detailed change logs
+26. Review file modifications as they occur:
     - `pom.xml` and `build.gradle` updates for Azure SDK dependencies
     - `application.properties` configuration changes
     - Spring Cloud Azure version properties
-29. Allow any prompted operations during the migration
+27. Allow any prompted operations during the migration
 
 **Validate Migration:**
 
-30. Wait for automated validation to complete:
+28. Wait for automated validation to complete:
     - CVE scanning for security vulnerabilities
     - Build validation
     - Consistency checks
     - Test execution
-31. Review validation results in the chat window
-32. Allow automated fixes if validation issues are detected
-33. Confirm all validation stages pass successfully
+29. Review validation results in the chat window
+30. Allow automated fixes if validation issues are detected
+31. Confirm all validation stages pass successfully
 
 **Test Modernized Application:**
 
-34. Open Terminal in VS Code
-35. Run `scripts\startapp.cmd` again
-36. Verify the application starts with Azure Blob Storage integration
-37. Test application functionality at http://localhost:8080
-38. Confirm no errors related to storage operations
+32. Open Terminal in VS Code
+33. Run `scripts\startapp.cmd` (Windows) or `scripts/startapp.sh` (Linux/Codespaces) again
+34. Verify the application starts with Azure Blob Storage integration
+35. Test application functionality at http://localhost:8080
+36. Confirm no errors related to storage operations
 
 **Optional: Continue Modernization:**
 
-39. Review other migration tasks in the assessment report
-40. Execute additional migrations as time permits
-41. Track progress through the `plan.md` and `progress.md` files
+37. Review other migration tasks in the assessment report
+38. Execute additional migrations as time permits
+39. Track progress through the `plan.md` and `progress.md` files
 
 ### Success Criteria
 
