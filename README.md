@@ -67,7 +67,7 @@ This MicroHack has specific prerequisites to ensure optimal learning experience.
 - Java Development Kit (JDK 8 and JDK 21)
 - Maven
 
-**Alternative: Use GitHub Codespaces** (recommended if you don't have required software installed locally) {#github-codespaces-alternative}
+**Alternative: Use GitHub Codespaces** (recommended if you don't have required software installed locally)
 
 If you don't have the required software installed locally, you can use **GitHub Codespaces** for application modernization. Codespaces provides a cloud-based development environment with all necessary tools pre-configured.
 
@@ -399,7 +399,7 @@ Transform raw discovery data into actionable insights by cleaning data, grouping
 
 Modernize the Contoso University .NET Framework application to .NET 9 and deploy it to Azure App Service using GitHub Copilot's AI-powered code transformation capabilities.
 
-> **💡 Tip**: If you don't have Visual Studio 2022 installed locally, you can complete this challenge using **GitHub Codespaces**. See the [Alternative: Use GitHub Codespaces](#github-codespaces-alternative) section in the prerequisites for setup instructions.
+> **💡 Tip**: If you don't have Visual Studio 2022 installed locally, you can complete this challenge using **GitHub Codespaces**. See the [Alternative: Use GitHub Codespaces](#alternative-use-github-codespaces-recommended-if-you-dont-have-required-software-installed-locally) section in the prerequisites for setup instructions.
 
 ### Actions
 
@@ -486,7 +486,7 @@ Modernize the Contoso University .NET Framework application to .NET 9 and deploy
 
 Modernize the Asset Manager Java Spring Boot application for Azure deployment, migrating from AWS dependencies to Azure services using GitHub Copilot App Modernization in VS Code.
 
-> **💡 Tip**: If you don't have Docker Desktop, JDK, or Maven installed locally, you can complete this challenge using **GitHub Codespaces**. See the [Alternative: Use GitHub Codespaces](#github-codespaces-alternative) section in the prerequisites for setup instructions.
+> **💡 Tip**: If you don't have Docker Desktop, JDK, or Maven installed locally, you can complete this challenge using **GitHub Codespaces**. See the [Alternative: Use GitHub Codespaces](#alternative-use-github-codespaces-recommended-if-you-dont-have-required-software-installed-locally) section in the prerequisites for setup instructions.
 
 ### Actions
 
