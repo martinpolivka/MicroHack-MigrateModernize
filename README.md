@@ -87,7 +87,7 @@ If you don't have the required software (Visual Studio 2022, VS Code, Docker Des
 
 **What is GitHub Codespaces?**
 
-GitHub Codespaces provides a complete, configurable development environment in the cloud. It comes pre-installed with development tools and can run directly in your browser or through VS Code, eliminating the need for local software installation.
+GitHub Codespaces provides a complete, configurable development environment in the cloud. It includes a base set of development tools and can run directly in your browser or through VS Code, eliminating the need for local software installation.
 
 **How to Use GitHub Codespaces for Application Modernization:**
 
@@ -170,7 +170,7 @@ GitHub Codespaces provides a complete, configurable development environment in t
 **Benefits of Using Codespaces:**
 - No local software installation required
 - Consistent development environment
-- Pre-configured with common tools
+- Base development tools included (additional tools may need installation)
 - Accessible from any device with a browser
 - Easy collaboration and sharing
 - Integrated with GitHub workflows
