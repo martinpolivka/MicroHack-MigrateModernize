@@ -83,7 +83,7 @@ The lab environment provides:
 
 ### Alternative: Using GitHub Codespaces
 
-If you don't have the required software (Visual Studio 2022, VS Code, Docker Desktop, JDK, Maven) installed locally, you can use **GitHub Codespaces** to complete the modernization challenges (Challenge 3 and Challenge 4) in a pre-configured cloud development environment.
+If you don't have the required software (Visual Studio 2022, VS Code, Docker Desktop, JDK, Maven) installed locally, you can use **GitHub Codespaces** to complete the modernization challenges (Challenge 3 and Challenge 4) in a cloud development environment with common tools available.
 
 **What is GitHub Codespaces?**
 
@@ -109,17 +109,17 @@ GitHub Codespaces provides a complete, configurable development environment in t
    - The extension will automatically install GitHub Copilot dependencies if needed
    - Ensure you're signed in to your GitHub account with Copilot access
 
-4. **Install Required Development Tools:**
+4. **Verify and Install Required Development Tools:**
    
    For **.NET Application Modernization** (Challenge 3):
    ```bash
-   # Verify .NET SDK installation (may require installation depending on Codespace configuration):
+   # First, verify .NET SDK installation:
    dotnet --version
    
-   # If .NET 9 is not available, you can install it:
-   # wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
-   # chmod +x dotnet-install.sh
-   # ./dotnet-install.sh --channel 9.0
+   # If .NET 9 is not installed or you have an older version, install it:
+   wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+   chmod +x dotnet-install.sh
+   ./dotnet-install.sh --channel 9.0
    ```
 
    For **Java Application Modernization** (Challenge 4):
@@ -128,9 +128,8 @@ GitHub Codespaces provides a complete, configurable development environment in t
    java -version
    mvn --version
    
-   # Most Codespaces come with Java and Maven pre-installed
-   # If you need to install or switch JDK versions, Codespaces typically support apt-get:
-   # sudo apt-get update && sudo apt-get install -y openjdk-21-jdk
+   # If Java or Maven are not installed, you can install them:
+   sudo apt-get update && sudo apt-get install -y openjdk-21-jdk maven
    ```
 
 5. **Example Prompts for Autonomous Modernization:**
@@ -439,7 +438,9 @@ Modernize the Contoso University .NET Framework application to .NET 9 and deploy
 
 **Assess and Upgrade to .NET 9:**
 
-6. Right-click the ContosoUniversity project and select "Modernize" (or use GitHub Copilot Chat with the prompt: "Modernize this .NET application to the latest version")
+6. **If using Visual Studio (Option A):** Right-click the ContosoUniversity project and select "Modernize"
+   
+   **If using Codespaces (Option B):** Open GitHub Copilot Chat and use the prompt: "Modernize this .NET application to the latest version"
 
 ![Right-click Modernize menu](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0040.png)
 
