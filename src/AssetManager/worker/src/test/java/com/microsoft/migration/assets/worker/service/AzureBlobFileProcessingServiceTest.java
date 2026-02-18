@@ -61,11 +61,17 @@ public class AzureBlobFileProcessingServiceTest {
     void downloadOriginalCopiesFileFromBlob() throws Exception {
         // Arrange
         Path tempFile = Files.createTempFile("download-", ".tmp");
-        ByteArrayInputStream mockInputStream = new ByteArrayInputStream("test content".getBytes());
+        
+        // Create a mock BlobInputStream
+        com.azure.storage.blob.specialized.BlobInputStream mockBlobInputStream = 
+            mock(com.azure.storage.blob.specialized.BlobInputStream.class);
 
         when(blobServiceClient.getBlobContainerClient(containerName)).thenReturn(blobContainerClient);
         when(blobContainerClient.getBlobClient(testBlobName)).thenReturn(blobClient);
-        when(blobClient.openInputStream()).thenReturn(mockInputStream);
+        when(blobClient.openInputStream()).thenReturn(mockBlobInputStream);
+        
+        // Mock read behavior
+        when(mockBlobInputStream.read(any(byte[].class))).thenReturn(-1); // EOF
 
         // Act
         azureBlobFileProcessingService.downloadOriginal(testBlobName, tempFile);
