@@ -1,7 +1,7 @@
 package com.microsoft.migration.assets.controller;
 
 import com.microsoft.migration.assets.constants.StorageConstants;
-import com.microsoft.migration.assets.model.S3StorageItem;
+import com.microsoft.migration.assets.model.BlobStorageItem;
 import com.microsoft.migration.assets.service.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -22,13 +22,13 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/" + StorageConstants.STORAGE_PATH)
 @RequiredArgsConstructor
-public class S3Controller {
+public class BlobStorageController {
 
     private final StorageService storageService;
 
     @GetMapping
     public String listObjects(Model model) {
-        List<S3StorageItem> objects = storageService.listObjects();
+        List<BlobStorageItem> objects = storageService.listObjects();
         model.addAttribute("objects", objects);
         return "list";
     }
@@ -55,12 +55,12 @@ public class S3Controller {
         }
     }
     
-    @GetMapping("/view-page/{key}")
-    public String viewObjectPage(@PathVariable String key, Model model, RedirectAttributes redirectAttributes) {
+    @GetMapping("/view-page/{blobName}")
+    public String viewObjectPage(@PathVariable String blobName, Model model, RedirectAttributes redirectAttributes) {
         try {
             // Find the object in the list of objects
-            Optional<S3StorageItem> foundObject = storageService.listObjects().stream()
-                    .filter(obj -> obj.getKey().equals(key))
+            Optional<BlobStorageItem> foundObject = storageService.listObjects().stream()
+                    .filter(obj -> obj.getName().equals(blobName))
                     .findFirst();
             
             if (foundObject.isPresent()) {
@@ -76,10 +76,10 @@ public class S3Controller {
         }
     }
 
-    @GetMapping("/view/{key}")
-    public ResponseEntity<InputStreamResource> viewObject(@PathVariable String key) {
+    @GetMapping("/view/{blobName}")
+    public ResponseEntity<InputStreamResource> viewObject(@PathVariable String blobName) {
         try {
-            InputStream inputStream = storageService.getObject(key);
+            InputStream inputStream = storageService.getObject(blobName);
             
             HttpHeaders headers = new HttpHeaders();
             // Use a generic content type if we don't know the exact type
@@ -93,10 +93,10 @@ public class S3Controller {
         }
     }
 
-    @PostMapping("/delete/{key}")
-    public String deleteObject(@PathVariable String key, RedirectAttributes redirectAttributes) {
+    @PostMapping("/delete/{blobName}")
+    public String deleteObject(@PathVariable String blobName, RedirectAttributes redirectAttributes) {
         try {
-            storageService.deleteObject(key);
+            storageService.deleteObject(blobName);
             redirectAttributes.addFlashAttribute("success", "File deleted successfully");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to delete file: " + e.getMessage());
