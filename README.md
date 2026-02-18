@@ -108,8 +108,8 @@ If you don't have the required software installed locally, you can use **GitHub 
    - Open the GitHub Copilot App Modernization extension from the Activity Bar
    - Use the following example prompt in the Copilot Chat:
      ```
-     Find the ASP.NET application in this repository and modernize it to .NET 9. 
-     Upgrade the framework, migrate authentication from Windows AD to Microsoft Entra ID, 
+     Find the ASP.NET application in this repository and modernize it to .NET 9.
+     Upgrade the framework, migrate authentication from Windows AD to Microsoft Entra ID,
      and prepare it for Azure App Service deployment.
      ```
    - The agent will analyze the application, create a migration plan, and execute the modernization autonomously
@@ -120,16 +120,16 @@ If you don't have the required software installed locally, you can use **GitHub 
    - Click **Migrate to Azure** to trigger the assessment
    - Use example prompts like:
      ```
-     Assess this Java application and identify all modernization opportunities. 
-     Migrate from AWS S3 to Azure Blob Storage, upgrade from Java 8 to Java 21, 
+     Assess this Java application and identify all modernization opportunities.
+     Migrate from AWS S3 to Azure Blob Storage, upgrade from Java 8 to Java 21,
      and migrate from Spring Boot 2.x to 3.x autonomously.
      ```
    - The agent will perform the assessment and execute the guided migration tasks
    
    **Alternative Prompt for Complete Modernization:**
    ```
-   Find all applications in this repository (both .NET and Java) and create a 
-   comprehensive modernization plan. Execute the modernization autonomously, 
+   Find all applications in this repository (both .NET and Java) and create a
+   comprehensive modernization plan. Execute the modernization autonomously,
    including framework upgrades, cloud migration, and Azure service integration.
    ```
 
