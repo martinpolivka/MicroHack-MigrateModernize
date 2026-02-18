@@ -113,21 +113,24 @@ GitHub Codespaces provides a complete, configurable development environment in t
    
    For **.NET Application Modernization** (Challenge 3):
    ```bash
-   # .NET 9 SDK is typically pre-installed in Codespaces
-   # Verify installation:
+   # Verify .NET SDK installation (may require installation depending on Codespace configuration):
    dotnet --version
+   
+   # If .NET 9 is not available, you can install it:
+   # wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+   # chmod +x dotnet-install.sh
+   # ./dotnet-install.sh --channel 9.0
    ```
 
    For **Java Application Modernization** (Challenge 4):
    ```bash
-   # JDK and Maven are typically pre-installed in Codespaces
-   # Verify installation:
+   # Verify JDK and Maven installation:
    java -version
    mvn --version
    
-   # If you need different JDK versions, you can use SDKMAN (if installed):
-   # sdk install java 21-open
-   # sdk install java 8-open
+   # Most Codespaces come with Java and Maven pre-installed
+   # If you need to install or switch JDK versions, Codespaces typically support apt-get:
+   # sudo apt-get update && sudo apt-get install -y openjdk-21-jdk
    ```
 
 5. **Example Prompts for Autonomous Modernization:**
