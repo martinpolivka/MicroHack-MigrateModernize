@@ -69,7 +69,7 @@ This MicroHack has specific prerequisites to ensure optimal learning experience.
 
 **Alternative: Use GitHub Codespaces** (recommended if you don't have required software installed locally)
 
-If you don't have the required software installed locally, you can use **GitHub Codespaces** for application modernization. Codespaces provides a cloud-based development environment with all necessary tools pre-configured.
+If you don't have the required software installed locally, you can use **GitHub Codespaces** for application modernization. Codespaces provides a cloud-based development environment with VS Code and common development tools pre-configured.
 
 **Benefits of Using Codespaces:**
 - No local software installation required
