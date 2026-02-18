@@ -92,7 +92,7 @@ GitHub Codespaces provides a complete, configurable development environment in t
 **How to Use GitHub Codespaces for Application Modernization:**
 
 1. **Fork the Repository:**
-   - Navigate to `https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize`
+   - Navigate to [https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize](https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize)
    - Click the "Fork" button in the top-right corner
    - Select your account as the owner and click "Create fork"
 
@@ -120,12 +120,14 @@ GitHub Codespaces provides a complete, configurable development environment in t
 
    For **Java Application Modernization** (Challenge 4):
    ```bash
-   # Install JDK if not present
-   sdk install java 21-open
-   sdk install java 8-open
-   
-   # Maven is typically pre-installed
+   # JDK and Maven are typically pre-installed in Codespaces
+   # Verify installation:
+   java -version
    mvn --version
+   
+   # If you need different JDK versions, you can use SDKMAN (if installed):
+   # sdk install java 21-open
+   # sdk install java 8-open
    ```
 
 5. **Example Prompts for Autonomous Modernization:**
@@ -405,7 +407,7 @@ Modernize the Contoso University .NET Framework application to .NET 9 and deploy
 ### Actions
 
 **Setup and Preparation:**
-1. Navigate to `https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize` and click the "Fork" button in the top-right corner
+1. Navigate to [https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize](https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize) and click the "Fork" button in the top-right corner
 
 ![Fork the repository](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/fork-button.png)
 
@@ -500,7 +502,7 @@ Modernize the Asset Manager Java Spring Boot application for Azure deployment, m
 ### Actions
 
 **Environment Setup:**
-1. **Option A - Local Development:**
+1. **Option A - Local Development (Windows):**
    - Open Docker Desktop and ensure it's running
    - Open Terminal and run the setup commands:
      ```bash
@@ -514,7 +516,7 @@ Modernize the Asset Manager Java Spring Boot application for Azure deployment, m
    - Install GitHub Copilot App Modernization extension if not present
 
    **Option B - Using GitHub Codespaces:**
-   - Fork the repository at `https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize`
+   - Fork the repository at [https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize](https://github.com/CZSK-MicroHacks/MicroHack-MigrateModernize)
    - In your forked repository, click the green "Code" button
    - Select "Codespaces" tab and click "Create codespace on main"
    - Wait for the codespace to initialize (Docker is pre-installed)
