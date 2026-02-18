@@ -455,8 +455,6 @@ Modernize the Contoso University .NET Framework application to .NET 9 and deploy
 **Resolve Cloud Readiness Issues:**
 17. Open the `dotnet-upgrade-report.md` file
 
-17. Open the `dotnet-upgrade-report.md` file
-
 ![Upgrade report with cloud readiness issues](https://raw.githubusercontent.com/CZSK-MicroHacks/MicroHack-MigrateModernize/refs/heads/main/lab-material/media/0080.png)
 
 18. Review the Cloud Readiness Issues section
