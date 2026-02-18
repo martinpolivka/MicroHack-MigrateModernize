@@ -1,5 +1,11 @@
 #Set-StrictMode -Version 3.0
 
+param(
+    [Parameter(Mandatory=$false)]
+    [ValidateRange(1, [int]::MaxValue)]
+    [int]$NumberOfEnvironments = 1
+)
+
 ######################################################
 ##############   CONFIGURATIONS   ###################
 ######################################################
@@ -1418,11 +1424,39 @@ function Invoke-AzureMigrateConfiguration {
 ##############   SCRIPT EXECUTION   #################
 ######################################################
 
-# Execute the main function
+# Execute the main function for the specified number of environments
 try {
-    Invoke-AzureMigrateConfiguration `
-        -SkillableEnvironment $SkillableEnvironment `
-        -EnvironmentName $EnvironmentName
+    Write-Host "Creating $NumberOfEnvironments environment(s)..." -ForegroundColor Cyan
+    
+    for ($i = 1; $i -le $NumberOfEnvironments; $i++) {
+        Write-Host ""
+        Write-Host "========================================" -ForegroundColor Green
+        Write-Host "Creating Environment $i of $NumberOfEnvironments" -ForegroundColor Green
+        Write-Host "========================================" -ForegroundColor Green
+        Write-Host ""
+        
+        # Generate unique environment name for each instance
+        $currentEnvironmentName = if ($NumberOfEnvironments -gt 1) {
+            "${EnvironmentName}-${i}"
+        } else {
+            $EnvironmentName
+        }
+        
+        Write-Host "Environment Name: $currentEnvironmentName" -ForegroundColor Cyan
+        
+        # Execute the configuration for this environment
+        Invoke-AzureMigrateConfiguration `
+            -SkillableEnvironment $SkillableEnvironment `
+            -EnvironmentName $currentEnvironmentName
+        
+        Write-Host ""
+        Write-Host "Environment $i ($currentEnvironmentName) created successfully!" -ForegroundColor Green
+        Write-Host ""
+    }
+    
+    Write-Host "========================================" -ForegroundColor Green
+    Write-Host "All $NumberOfEnvironments environment(s) created successfully!" -ForegroundColor Green
+    Write-Host "========================================" -ForegroundColor Green
 } catch {
     Write-Host "Script execution failed: $($_.Exception.Message)" -ForegroundColor Red
     exit 1

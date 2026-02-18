@@ -10,7 +10,11 @@ To deploy the lab to Azure:
 2. Run the deployment script:
 
 ```powershell
+# Create a single environment
 .\New-MicroHackEnvironment.ps1
+
+# Or create multiple environments
+.\New-MicroHackEnvironment.ps1 -NumberOfEnvironments 3
 ```
 
 ## Overview
@@ -228,9 +232,15 @@ terraform apply -var="location=swedencentral" -var="vmpassword=YourStrongPasswor
 # Option 1: Download and run automatically
 ./download-and-configure.ps1
 
-# Option 2: Run configuration directly
+# Option 2: Run configuration directly (creates 1 environment)
 ./New-MicroHackEnvironment.ps1
+
+# Option 3: Create multiple environments (specify the number)
+./New-MicroHackEnvironment.ps1 -NumberOfEnvironments 3
 ```
+
+**Parameters:**
+- `-NumberOfEnvironments` (optional): Number of environments to create. Default is 1. When creating multiple environments, each will have a unique name with a numeric suffix (e.g., lab240218112730-1, lab240218112730-2, lab240218112730-3).
 
 #### VM Setup (for Terraform-created VMs)
 ```powershell
