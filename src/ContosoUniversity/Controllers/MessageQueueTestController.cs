@@ -1,19 +1,16 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using ContosoUniversity.Infrastructure;
 using ContosoUniversity.Services;
 using ContosoUniversity.Models;
+using ContosoUniversity.Data;
 
 namespace ContosoUniversity.Controllers
 {
-    public class MessageQueueTestController : Controller
+    public class MessageQueueTestController : BaseController
     {
-        private readonly NotificationService _notificationService;
-
-        public MessageQueueTestController()
+        public MessageQueueTestController(SchoolContext context, NotificationService notification) 
+            : base(context, notification)
         {
-            _notificationService = new NotificationService();
         }
 
         public IActionResult Index()
@@ -57,7 +54,7 @@ namespace ContosoUniversity.Controllers
                 
                 // Try to receive up to 10 notifications
                 int count = 0;
-                while ((notification = _notificationService.ReceiveNotification()) != null && count < 10)
+                while ((notification = notificationService.ReceiveNotification()) != null && count < 10)
                 {
                     notifications.Add(notification);
                     count++;
@@ -143,7 +140,7 @@ namespace ContosoUniversity.Controllers
         {
             if (disposing)
             {
-                _notificationService?.Dispose();
+                // NotificationService is managed by DI container
             }
             base.Dispose(disposing);
         }

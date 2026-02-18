@@ -1,16 +1,19 @@
-using System;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using ContosoUniversity.Services;
 
 namespace ContosoUniversity.Controllers
 {
     public class DepartmentsController : BaseController
     {
+        public DepartmentsController(SchoolContext context, NotificationService notification) 
+            : base(context, notification)
+        {
+        }
+
         // GET: Departments - All roles can view
         public IActionResult Index()
         {
