@@ -67,6 +67,100 @@ This MicroHack has specific prerequisites to ensure optimal learning experience.
 - Java Development Kit (JDK 8 and JDK 21)
 - Maven
 
+**Alternative: Use GitHub Codespaces** (recommended if you don't have required software installed locally)
+
+If you don't have the required software installed locally, you can use **GitHub Codespaces** for application modernization. Codespaces provides a cloud-based development environment with all necessary tools pre-configured.
+
+**Benefits of Using Codespaces:**
+- No local software installation required
+- Pre-configured development environment
+- Access from any device with a web browser
+- Consistent development environment across team members
+
+**How to Use Codespaces for Modernization:**
+
+1. **Fork the Repository**: Navigate to the repository on GitHub and click the "Fork" button to create your own copy.
+
+2. **Create a Codespace**:
+   - In your forked repository, click the green **Code** button
+   - Select the **Codespaces** tab
+   - Click **Create codespace on main**
+   - Wait for the environment to initialize (this may take a few minutes)
+
+3. **Install GitHub Copilot App Modernization Extension**:
+   
+   Once your Codespace is running, install the GitHub Copilot App Modernization extension:
+   
+   - Open the Extensions view (Ctrl+Shift+X or Cmd+Shift+X on macOS)
+   - Search for "GitHub Copilot App Modernization"
+   - Click **Install**
+   - Restart the Codespace if prompted
+   - Sign in to GitHub Copilot when prompted
+
+   > **Note**: You need a GitHub Copilot Pro, Pro+, Business, or Enterprise subscription to use this extension.
+
+4. **Use GitHub Copilot for Autonomous Modernization**:
+   
+   The GitHub Copilot App Modernization extension can autonomously find and modernize applications. Here's how:
+   
+   **For .NET Applications (like ContosoUniversity):**
+   - Navigate to the ContosoUniversity project in the Explorer
+   - Open the GitHub Copilot App Modernization extension from the Activity Bar
+   - Use the following example prompt in the Copilot Chat:
+     ```
+     Find the ASP.NET application in this repository and modernize it to .NET 9. 
+     Upgrade the framework, migrate authentication from Windows AD to Microsoft Entra ID, 
+     and prepare it for Azure App Service deployment.
+     ```
+   - The agent will analyze the application, create a migration plan, and execute the modernization autonomously
+   
+   **For Java Applications (like AssetManager):**
+   - Navigate to the AssetManager project in the Explorer
+   - Open the GitHub Copilot App Modernization extension from the Activity Bar
+   - Click **Migrate to Azure** to trigger the assessment
+   - Use example prompts like:
+     ```
+     Assess this Java application and identify all modernization opportunities. 
+     Migrate from AWS S3 to Azure Blob Storage, upgrade from Java 8 to Java 21, 
+     and migrate from Spring Boot 2.x to 3.x autonomously.
+     ```
+   - The agent will perform the assessment and execute the guided migration tasks
+   
+   **Alternative Prompt for Complete Modernization:**
+   ```
+   Find all applications in this repository (both .NET and Java) and create a 
+   comprehensive modernization plan. Execute the modernization autonomously, 
+   including framework upgrades, cloud migration, and Azure service integration.
+   ```
+
+5. **Monitor the Modernization Process**:
+   - **Watch the Copilot Chat** for real-time status updates and progress
+   - **Review Generated Files**: Check `plan.md`, `progress.md`, or `dotnet-upgrade-report.md` for detailed logs
+   - **Allow Operations**: Click "Allow" when prompted for operations during the migration
+   - **Review Code Changes**: The extension will show you the proposed changes in the editor
+   - **Track Validation**: Monitor automated validation steps (CVE scanning, build validation, tests)
+
+6. **Review and Apply Changes**:
+   - **Review the Migration Plan**: Before execution starts, carefully review the generated migration plan
+   - **Examine Code Diffs**: Use the Source Control view (Ctrl+Shift+G) to see all changes
+   - **Test Incrementally**: After each major migration step completes, review and test the changes
+   - **Click "Keep"**: When satisfied with the changes, click "Keep" to apply them
+   - **Resolve Issues**: If validation fails, the agent will attempt to fix issues automatically
+   - **Commit Changes**: Once all changes are validated, commit them to your branch
+
+7. **Deploy to Azure**:
+   - After modernization completes successfully, the agent can help you deploy to Azure
+   - Follow the deployment prompts in the Copilot Chat
+   - The agent will provision necessary Azure resources and deploy your application
+
+**Important Notes:**
+- The modernization process is **autonomous** but requires your **supervision and approval**
+- Always **monitor the chat** for questions or confirmations from the agent
+- **Review all code changes** before accepting them to ensure they meet your requirements
+- The agent will create a **new branch** for changes, allowing you to review before merging
+- **Validate the application** runs correctly after each major migration step
+- Keep an eye on the **validation results** (CVE scans, build status, test results)
+
 **Azure Resources:**
 The lab environment provides:
 - Resource Group: `on-prem`
@@ -305,6 +399,8 @@ Transform raw discovery data into actionable insights by cleaning data, grouping
 
 Modernize the Contoso University .NET Framework application to .NET 9 and deploy it to Azure App Service using GitHub Copilot's AI-powered code transformation capabilities.
 
+> **💡 Tip**: If you don't have Visual Studio 2022 installed locally, you can complete this challenge using **GitHub Codespaces**. See the [Alternative: Use GitHub Codespaces](#alternative-use-github-codespaces-recommended-if-you-dont-have-required-software-installed-locally) section in the prerequisites for setup instructions.
+
 ### Actions
 
 **Setup and Preparation:**
@@ -389,6 +485,8 @@ Modernize the Contoso University .NET Framework application to .NET 9 and deploy
 ### Goal
 
 Modernize the Asset Manager Java Spring Boot application for Azure deployment, migrating from AWS dependencies to Azure services using GitHub Copilot App Modernization in VS Code.
+
+> **💡 Tip**: If you don't have Docker Desktop, JDK, or Maven installed locally, you can complete this challenge using **GitHub Codespaces**. See the [Alternative: Use GitHub Codespaces](#alternative-use-github-codespaces-recommended-if-you-dont-have-required-software-installed-locally) section in the prerequisites for setup instructions.
 
 ### Actions
 
